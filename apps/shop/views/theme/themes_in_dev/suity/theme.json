@@ -1,0 +1,30 @@
+{
+	"page":
+	{"home":
+		{
+			"welcome_msg":
+			{
+				"name":"Welcome message",
+				"default":"Welcome to my shop",
+				"type":"text"
+			}		
+		}
+	},
+	"global":
+	{
+		"theme_color" : "green"
+	},
+	"info":
+	{
+		"name" : "Suity",
+		"description": "Suity is a nice stylish theme with a modern look and bright colors. It works on a range of stores ranging from simple small personal stores to established modern businesses. Try it out, you just might like it.",
+		"dir": "suity"
+	},
+	"vocabulary":
+	{
+		"blog": "Blog",
+		"product": "Product",
+		"featured_products": "Featured Products",
+		"browse_store": "Browse Store"
+	}
+}

@@ -1,0 +1,58 @@
+{% extends 'layout.twig' %}
+
+{% set categoryTitle %}{{ 'CoreAdminHome_Administration'|translate }}{% endset %}
+
+{% set bodyClass = postEvent('Template.bodyClass', 'admin') %}
+
+{% block body %}
+    {% if isSuperUser %}
+        {% set topMenuModule = 'CoreAdminHome' %}
+        {% set topMenuAction = 'generalSettings' %}
+    {% else %}
+        {% set topMenuModule = 'SitesManager' %}
+        {% set topMenuAction = 'index' %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block root %}
+    {% include "@CoreHome/_topScreen.twig" %}
+
+    {% import 'ajaxMacros.twig' as ajax %}
+    {{ ajax.requestErrorDiv(emailSuperUser|default('')) }}
+    {{ postEvent("Template.beforeContent", "admin", currentModule) }}
+
+    <div class="page">
+
+        {% if showMenu is not defined or showMenu %}
+            {% import '@CoreHome/_menu.twig' as menu %}
+            {{ menu.menu(adminMenu, false, 'Menu--admin') }}
+        {% endif %}
+
+        <div class="pageWrap">
+
+            <div class="top_controls">
+                {% block topcontrols %}
+                {% endblock %}
+
+                {% include "@CoreHome/_headerMessage.twig" %}
+            </div>
+
+            <div class="admin" id="content">
+                {% include "@CoreHome/_notifications.twig" %}
+                {% include "@CoreHome/_warningInvalidHost.twig" %}
+
+                <div class="ui-confirm" id="alert">
+                    <h2></h2>
+                    <input role="no" type="button" value="{{ 'General_Ok'|translate }}"/>
+                </div>
+
+                {% block content %}
+                {% endblock %}
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

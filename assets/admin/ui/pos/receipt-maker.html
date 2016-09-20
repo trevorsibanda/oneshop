@@ -1,0 +1,244 @@
+<div class="row noPrint">
+  <div class="col-lg-12">
+    <ol class="breadcrumb">
+      <li><i class="fa fa-home"></i><a ng-href="#/point-of-sale">Point of Sale</a></li>
+      <li><i class="fa fa-truck"></i>Receipt Maker</li>                
+    </ol>
+  </div>
+</div>
+<style type="text/css">
+  
+input, textarea{
+  border: 1px solid #FFF;
+}
+
+.container input:hover, .container textarea:hover, 
+.table-striped > tbody > tr:nth-child(2n+1) > td input:hover,
+.container input:focus, .container textarea:focus, 
+.table-striped > tbody > tr:nth-child(2n+1) > td input:focus{
+  border: 1px solid #CCC;
+}
+
+.table-striped > tbody > tr:nth-child(2n+1) > td input{
+    background-color: #F9F9F9;
+    border: 1px solid #F9F9F9;
+}
+
+.input-ctrl{
+  background-color: #F9F9F9;
+  border: 1px solid #F9F9F9;
+
+}
+
+.logo-img{
+  max-height: 128px;
+  max-width: 128px;
+}
+
+@media print {
+    .noPrint {
+        display:none;
+    }
+    /** Hide sidebar **/
+    aside{
+      display: none;
+    }
+
+    .input-ctrl{
+      background-color: transparent;
+      border: none;
+    }
+    /** Hide headnav **/
+    header{
+      display: none;
+    }
+
+    div.container{
+      width: 800px;
+      
+    }
+
+
+    #sidebar{
+      display:none;
+      margin-left: -280px;
+    }
+
+    #left{
+      left: 0px;
+      top: 0px;
+
+    }
+
+    .row{
+      margin-left: -280px;
+    }
+
+    body{
+      padding-top: 0px;
+    }
+
+    #sidebar{
+      display:none;
+    }
+
+    #main-content{
+      margin-left: 0px;
+    }
+
+
+    section.wrapper{
+      margin-top: 0px;
+
+    }
+
+}
+
+body{
+  padding:20px;
+}
+
+.infos input{
+  width: 300px;
+}
+
+.align-right input{
+  text-align:right;
+  width: 300px;
+}
+
+
+
+
+.copy {
+  font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+  width: 100%;
+  margin: 40px 0 20px 0;
+  font-size: 10px;
+  color: rgba(0, 0, 0, 0.5);
+  text-align: center;
+  color: #404040;
+  cursor: default;
+  line-height: 1.4em;
+}
+
+.copy .love {
+  display: inline-block;
+  position: relative;
+  color: #ce0c15;
+}
+
+.input-ctrl{
+  background-color: #F9F9F9;
+  border: 1px solid #F9F9F9;
+
+}
+</style>
+<div class="container" id="invoice"  style="width:800px; background-color: white;" >
+  <table class="table">
+    <tr>
+      <td align="center" style="background-color:#357EBD;color:#FFF" colspan="2">
+        INVOICE
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <h4>Invoice #<input type="text" id="invoice_number" readonly ng-model="vm.invoice.order.order_id" /></h4>
+        <small ng-if="vm.orderMode && vm.invoice.order.status == 'pending'">This is a qoutation and not an actual payment receipt</small>
+      </td>
+      <td align="right">
+        <img ng-hide="vm.logoRemoved" class="logo-img" id="company_logo" src="{{ vm.siteLogo }}" alt="{{ vm.siteName }}"  />
+        <br/>
+      </td>
+    </tr>
+  </table>
+  <table class="table">
+    <tr>
+      <td>
+        <div class="infos">
+          <div><strong><input type="text" ng-readonly="vm.orderMode" placeholder="Customer name" ng-model="vm.invoice.customer.name"/></strong></div>
+          <div><input type="text" ng-readonly="vm.orderMode" placeholder="Customer address" ng-model="vm.invoice.customer.address"/></div>
+          <div><input type="text" ng-readonly="vm.orderMode" placeholder="Customer email" ng-model="vm.invoice.customer.email"/></div>
+          <div><input type="text" ng-readonly="vm.orderMode" placeholder="Customer phone number" ng-model="vm.invoice.customer.phone"/></div>
+          
+        </div>
+      </td>
+      <td align="right">
+        <div class="align-left">
+          <div><strong><input type="text" ng-model="vm.invoice.company.name"/></strong></div>
+          <div><input type="text" ng-readonly="vm.orderMode" ng-readonly="vm.orderMode" ng-model="vm.invoice.company.address"/></div>
+          <div><input type="text" ng-readonly="vm.orderMode" ng-readonly="vm.orderMode" ng-model="vm.invoice.company.email"/></div>
+          <div><input type="text" ng-readonly="vm.orderMode" ng-readonly="vm.orderMode" ng-model="vm.invoice.company.phone"/></div>
+          <div><input type="text" ng-readonly="vm.orderMode" ng-readonly="vm.orderMode" ng-model="vm.invoice.company.url"/></div>
+        </div>
+      </td>
+    </tr>
+  </table>
+  <table class="table table-striped" align="center" >
+      <tr>
+          <th></th>
+          <th>Description</th>
+          <th>Qty</th>
+          <th>Cost</th>
+          <th style="text-align:right;">Total</th>
+          
+      </tr>
+      <tr ng-repeat="item in vm.invoice.order.items" >
+          <td><a ng-hide="vm.printMode" ng-if="! vm.orderMode " ng-click="vm.removeItem(item)" style="color: red; font-weight:bold;"><i class="fa fa-2x fa-remove"></i></a></td>
+          <td><input ng-model="item.product.name" ng-readonly="vm.orderMode" class="form-control input-ctrl" placeholder="Description"></td>
+          <td><input ng-model="item.qty" value="1" ng-readonly="vm.orderMode" class="form-control input-ctrl" size="4" ng-required ng-validate="integer" placeholder="Quantity"></td>
+          <td><input ng-model="item.price_per_item" ng-readonly="vm.orderMode" value="0.00" class="form-control input-ctrl" ng-required ng-validate="number" size="6" placeholder="Price per item"></td>
+          <td align="right">{{item.price_per_item * item.qty | currency}}</td>
+          
+      </tr>
+      <tr ng-hide="vm.printMode">
+          <td colspan="5"><a class="btn btn-primary" ng-if="! vm.orderMode " ng-click="vm.addItem()" >Add Item</a></td>
+      </tr>
+      <tr>
+          <td colspan="4" align="right">
+            Sub Total
+          </td>
+          <td align="right">
+            {{vm.invoice_sub_total() | currency}}
+          </td>
+      </tr>
+      <tr>
+          <td colspan="4" align="right">
+            Shipping Cost: 
+          </td>
+          <td align="right">
+            {{vm.invoice.order.shipping_amount | currency}}
+          </td>
+      </tr>
+      <tr  ng-if="vm.invoice.order.status == 'pending' || vm.invoice.order.status == 'cancelled'">
+          <td colspan="4" align="right">
+            Grand Total:
+          </td>
+          <td align="right">
+            {{vm.calculate_grand_total() | currency}}
+          </td>
+      </tr>
+      <tr ng-if="vm.invoice.order.status == 'paid' || vm.invoice.order.status == 'collected' ">
+          <td colspan="4" align="right">
+            <b>Amount Paid</b>:
+          </td>
+          <td align="right">
+            {{vm.invoice.order.transaction.amount | currency}}
+          </td>
+      </tr>
+  </table>
+  <div class="noPrint">
+    <a  class="btn btn-success "  ng-hide="vm.printMode" ng-click="vm.printMode = true;"><i class="fa fa-print"></i> Turn On Print Mode</a>
+    <a  class="btn btn-primary"  ng-show="vm.printMode" ng-click="vm.printMode = false;"><i class="fa fa-print"></i> Turn Off Print Mode</a>
+    <a  class="btn btn-warning"  ng-click="vm.resetInvoice()" ng-if="! vm.orderMode">Reset</a>
+    <a  class="btn btn-default pull-right" ng-if="vm.allowPrintMode"  ng-show="vm.printMode" ng-click="vm.print()"><i class="fa fa-print"></i> Print</a>
+    
+  </div>
+  <div ng-hide="! vm.printMode" class="copy ">
+    <br/>
+    <p class="text-center">View this order online at <a href="" >{{ vm.invoice.company.url }}/cart/view_order/{{ vm.invoice.order.order_id }}</a>
+    </p>
+    <span class="pull-left">{{ vm.siteName }}</span><span class="pull-right">Powered by Oneshop &copy; http://oneshop.co.zw/</span></a>
+  </div>
+</div>
+

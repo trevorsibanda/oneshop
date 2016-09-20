@@ -1,0 +1,203 @@
+          
+  <!--overview start-->
+<div class="row">
+	<div class="col-lg-12">
+		<h3 class="page-header"><i class="fa fa-laptop"></i> Dashboard</h3>
+		<ol class="breadcrumb">
+			<li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
+			<li><i class="fa fa-laptop"></i>{{ vm.summary.shop.name }}</li>						  	
+		</ol>
+	</div>
+</div>
+<!-- Leader -->  
+<div class="row">
+	<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+		<div class="info-box blue-bg">
+			<i class="fa fa-suitcase"></i>
+			<div class="count">{{ vm.summary.pending_orders }}</div>
+			<div class="title">Orders</div>		
+							
+		</div><!--/.info-box-->	
+
+	</div><!--/.col-->
+	
+	<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+		<div class="info-box brown-bg">
+			<i class="fa fa-shopping-cart"></i>
+			<div class="count">{{ vm.summary.purchased_orders }}</div>
+			<div class="title">Purchases</div>						
+		</div><!--/.info-box-->			
+	</div><!--/.col-->	
+	
+	<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+		<div class="info-box dark-bg">
+			<i class="fa fa-truck"></i>
+			<div class="count">{{ vm.summary.shipping_orders }}</div>
+			<div class="title">Deliveries</div>						
+		</div><!--/.info-box-->			
+	</div><!--/.col-->
+	
+	<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+		<div class="info-box green-bg">
+			<i class="fa fa-cubes"></i>
+			<div class="count">{{ vm.summary.stock_count }}</div>
+			<div class="title">Stock</div>						
+		</div><!--/.info-box-->			
+	</div><!--/.col-->
+	
+</div>
+<!-- End leader -->
+
+
+<div class="row">
+<div class="col-lg-9 col-md-12">
+		<!-- Customer Support -->
+		<div class="panel panel-danger" ng-if="vm.summary.notifications" >
+			<div class="panel-heading">
+				<h2><i class="fa fa-flag-o red"></i><strong>263Shop Notifications</strong></h2>
+				<div class="panel-actions">
+					<a href="javascript:;" class="btn-setting"><i class="fa fa-rotate-right"></i></a>
+					<a href="javascript:;" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+					<a href="javascript:;" class="btn-close"><i class="fa fa-times"></i></a>
+				</div>
+			</div>
+			<div class="panel-body" >
+				<table class="table"   >
+					<thead>
+						<tr>
+							<th>Notification</th>
+							
+						</tr>
+					</thead>   
+					<tbody >
+						<tr ng-repeat="msg in vm.summary.notifications">
+							<td><i class="fa fa-info-circle "></i> {{ msg }}</td>
+							
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<!-- Customer support End -->
+		<!-- Customer Support -->
+		<div class="panel panel-danger" ng-if="vm.summary.support_tickets.length" >
+			<div class="panel-heading">
+				<h2><i class="fa fa-flag-o red"></i><strong>Customer Support Tickets</strong></h2>
+				<div class="panel-actions">
+					<a href="javascript:;" class="btn-setting"><i class="fa fa-rotate-right"></i></a>
+					<a href="javascript:;" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+					<a href="javascript:;" class="btn-close"><i class="fa fa-times"></i></a>
+				</div>
+			</div>
+			<div class="panel-body" >
+				<table class="table"   >
+					<thead>
+						<tr>
+							<th>Ticket #</th>
+							<th>Type</th>
+							<th>Request</th>
+							<th>Fullname</th>
+							<th>Action</th>
+						</tr>
+					</thead>   
+					<tbody >
+						<tr ng-repeat="ticket in vm.summary.support_tickets">
+							<td>{{ ticket.id }}</td>
+							<td>{{ ticket.type }}</td>
+							<td>{{ ticket.title }}</td>
+							<td>{{ ticket.fullname }}</td>
+							<td><a ng-href="#/order/support_ticket/{{ ticket.id }}" class="btn btn-xs btn-block btn-default" ><i class="fa fa-ticket"></i> View ticket</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<!-- Customer support End -->
+		<!-- Latest Orders summary -->
+		<div class="panel panel-success" ng-if="vm.summary.latest_orders.length">
+			<div class="panel-heading">
+				<h2><i class="fa fa-flag-o red"></i><strong>Latest Orders</strong></h2>
+				<div class="panel-actions">
+					
+				</div>
+			</div>
+			<div class="panel-body" >
+				<table class="table"   >
+					<thead>
+						<tr>
+							
+							<th>Fullname</th>
+							<th>Email</th>
+							<th>Amount</th>
+							<th>Date Ordered</th>
+							
+							
+							<th>Status</th>
+							
+							
+							<th>Action</th>
+						</tr>
+					</thead>   
+					<tbody >
+						<tr ng-repeat="order in vm.summary.latest_orders">
+							<td>{{ order.fullname }}</td>
+							<td>{{ order.email }}</td>
+							<td>{{ order.total | currency }}</td>
+							<td>{{ order.date_created | date }}</td>
+							
+							<td>{{ order.status }}</td>
+							<td><a ng-href="#/orders/view/{{ order.order_id }}" class="btn btn-xs btn-block btn-default" ><i class="fa fa-cube"></i> View order</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<!-- End latest orders summary -->
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+		      <div class="pull-left"><i class="fa fa-rss"></i>&nbsp; Latest OneShop Feed</div>
+		       
+		      <div class="clearfix"></div>
+		    </div>
+		    <div class="panel-body">
+				<p class="text-center" ><strong>Loading RSS Feed...</strong></p>     
+    		</div>
+  		</div>
+	</div>
+  <div class="col-md-3">
+		
+	  	<div class="social-box facebook">
+			<i class="fa fa-cubes"></i>
+			<ul>
+				<li>
+					<strong>{{ vm.summary.stock_ordered }}</strong>
+					<span>stock ordered</span>
+				</li>
+				<li>
+					<strong>{{ vm.summary.stock_sold }}</strong>
+					<span>stock sold</span>
+				</li>
+			</ul>
+		</div>
+		<div class="social-box twitter">
+			<i class="fa fa-dollar"></i>
+			<h4 class="text-center">
+				<strong>{{ vm.summary.amount_paid | currency }}</strong>
+				<span>orders paid</span>
+			</h4>
+		</div>			
+		<div class="social-box google-plus">
+			<i class="fa fa-credit-card"></i>
+			<ul>
+				<li>
+					<strong>{{ vm.summary.pending_transactions }}</strong>
+					<span>transactions</span>
+				</li>
+				<li>
+					<strong>{{ vm.summary.amount_ordered | currency }}</strong>
+					<span>in orders</span>
+				</li>
+			</ul>
+		</div><!--/social-box-->			
+  </div>
+</div>  

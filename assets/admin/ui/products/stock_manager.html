@@ -1,0 +1,86 @@
+<div class="row">
+	<div class="col-lg-12">
+		<ol class="breadcrumb">
+			<li><i class="fa fa-list"></i><a ng-href="#/products/browse">Products</a></li>
+			<li><i class="fa fa-cubes"></i> Stock manager</li> 						  	
+		</ol>
+	</div>
+</div>
+	<div class="col-md-12 col-lg-10" >
+		<div class="panel panel-default" >
+			<div class="panel-body" >
+				<p>Manage your stock, remember to save the changes after you are complete !</p>
+				<div class="input-group" >
+					<input type="text" class="form-control" ng-model="vm.product_search" placeholder="Filter through the products and select one" />
+					<span class="input-group-addon" ><i class="fa fa-search" ></i></span>
+				</div>
+				<!-- Products -->
+                    <div ng-repeat="product in vm.products | filter:vm.product_search "  >
+     				<div class="row well"  ng-show="vm.showProduct(product);" >
+     					<div class="col-md-4 col-sm-2 col-xs-4 "   >
+                                 <img ng-src="{{ vm.image_url( product.images[0] ) }}" class="img-responsive" style="width: 100%; height: 160px;">
+                                 
+                              </div>
+                              <div class="col-md-8 col-sm-10 col-xs-8 " >
+                              	<legend>{{ product.name }}<span class="pull-right">{{ product.price | currency }}</span></legend>
+                              	<div class="row" >
+                              		<div class="col-sm-4" >
+                              			<label class="label label-warning">Stock Ordered</label>
+                              			<br/><br/>
+                              			<input style="font-weight: bold;" type="text" class="form-control" ng-model="product.stock_ordered" readonly />
+                              			<div ng-if="product.stock_ordered" >
+                                                  <button class="btn btn-xs btn-block btn-default"><i class="fa fa-list"></i> View Orders</button>
+                              			     <button ng-click="vm.cancelOrders(product)" class="btn btn-xs btn-block btn-danger"><i class="fa fa-remove"></i> Cancel all orders</button>
+                                             </div>
+                              		</div>
+                              		<div class="col-sm-4" >
+                              			<label class="label label-success">Stock Sold</label>
+                              			<br/><br/>
+                              			<input style="font-weight: bold;" type="text" class="form-control" readonly ng-model="product.stock_sold" />
+                              			<button ng-if="product.stock_sold" class="btn btn-xs btn-block btn-default"><i class="fa fa-info-circle"></i> View all orders</button>
+                              		</div>
+                              		<div class="col-sm-4" >
+                              			<label class="label label-info">Stock Left</label>
+                              			<br/><br/>
+                              			<div class="input-group" >
+                              				<div class="input-group-addon" >
+                              					<a ng-click="vm.addStock( -1 , product );" class="" popover="Remove 1 item " popover-trigger="mouseenter"><i class="fa fa-minus"></i></a>
+                              				</div>
+          									<input style="font-weight: bold;" type="text" class="form-control" ng-readonly="!vm.isEditting" ng-model="product.stock_left" />
+                              				<div class="input-group-addon" popover="Add 1 item " popover-trigger="mouseenter" >
+                              					<a ng-click="vm.addStock( 1 , product );" class=""  ><i class="fa fa-plus"></i></a>
+                              				</div>
+                              				
+                              			</div>
+                              			
+                              		</div>
+                              	</div>
+                              	<br/>
+                                   <div class="alert alert-warning" ng-if="vm.showProduct(product) && vm.isEditting" >
+                                        <i class="fa fa-warning" ></i> You must first save your changes !
+                                        <div class="row" >
+                                             
+                                             <div class="col-xs-6" >
+                                                  <button ng-click="vm.clearChanges(product)" class="btn btn-default btn-block"><i class="fa fa-refresh"></i>Cancel editing </button>
+                                             </div>
+                                             <div class="col-xs-6" >
+                                                  <button ng-click="vm.saveStock(product)"  class="btn btn-block btn-success"><i class="fa fa-save"></i> Save changes</button>
+                                             </div>
+                                        </div>
+                                        
+                                   </div>
+                              	
+                              </div>
+     				</div>
+                    </div>
+				<!-- end products -->
+
+			</div>
+		</div>
+	</div>
+	<div class="col-md-2 well" >
+		<label>Action</label>
+		<br/>
+		<button class="btn btn-default btn-sm btn-block " ng-click="vm.cacheReload()"><i class="fa fa-undo"></i> Reload</button>
+	</div>
+</div>	

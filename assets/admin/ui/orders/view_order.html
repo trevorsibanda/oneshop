@@ -1,0 +1,813 @@
+<div class="row">
+	<div class="col-lg-12">
+		<ol class="breadcrumb">
+			<li><i class="fa fa-shopping-cart"></i><a ng-href="#/orders/browse">Orders</a></li>
+			<li><i class="fa fa-ticket"></i>View Order</li>						  	
+		</ol>
+	</div>
+</div>
+<div class="row" ng-if="vm.is_loaded" >
+	<div class="col-md-9" >
+		<h4 class="text-left">Order #<span ng-bind="vm.order.order_id"></span></h4>
+		<alert type="warning" ng-if="vm.order.status == 'pending'"  >
+			<i class="fa fa-warning"></i> 
+			This order has not yet been paid for. You can choose to cancel or delete it 
+		</alert>
+		<alert type="danger" ng-if="vm.order.status == 'cancelled'" >
+			<i class="fa fa-clock"></i> 
+			This order has been cancelled. It expire(s)d on {{ vm.order.expire_date | date }}
+		</alert>
+		<alert type="success" ng-if="vm.order.status == 'paid' " >
+			<i class="fa fa-check"></i> This order has been paid for  
+		</alert>
+		<alert type="info" ng-if="vm.order.status == 'collected' " >
+			<i class="fa fa-archive"></i> This order has been archived.  
+		</alert>
+		<!-- Paid but no dispatched for delivery -->
+		<div class="alert alert-danger" ng-if="vm.order.status == 'paid' && vm.order.shipping.is_dispatched == false && vm.order.shipping.type == 'deliver'" >
+			<i class="fa fa-exclamation-circle" ></i> This order is supposed to be delivered to the customer and has not been dispatched !<br/>We advice you deliver this order as soon as possible to avoid inconveniencing the customer !
+		</div>
+		<div class="alert alert-info" ng-if="vm.order.status == 'paid' && vm.order.shipping.is_dispatched == false && vm.order.shipping.type == 'collect_instore'" >
+			<i class="fa fa-exclamation-circle" ></i> The customer will collect their order from your store. If they have already collected, please specify. 
+			
+		</div>
+		<div class="alert alert-info" ng-if="vm.order.status == 'paid' && vm.order.shipping.is_dispatched == true && vm.order.shipping.type == 'collect_instore'" >
+			<i class="fa fa-shopping-cart" ></i> The customer has collected their order.
+			
+		</div>
+		
+
+		<!-- end paid but not dispatched -->
+
+		<div class="well" >
+			<div class="row" >
+				<div class="col-md-6" >
+					<table class="table table-responsive" >
+						<thead>
+
+						</thead>
+						<tbody>
+							<tr>
+								<td>Customer:</td>
+								<td><span ng-bind="vm.order.shipping.fullname" ></span></td>
+							</tr>
+							<tr>
+								<td>Order ID:</td>
+								<td><span ng-bind="vm.order.order_id" ></span></td>
+							</tr>
+							<tr>
+								<td>Status</td>
+								<td><span >{{ vm.order.status | uppercase }}</span></td>
+							</tr>
+							
+							<tr>
+								<td>Amount :</td>
+								<td><span  >{{ vm.order.total | currency }}</span></td>
+							</tr>
+							<tr>
+								<td># Items :</td>
+								<td><span  >{{ vm.order.items.length  }}</span></td>
+							</tr>
+							<tr>
+								<td>Type:</td>
+								<td>
+									<span class="fa fa-truck" ng-if="vm.order.shipping.type == 'deliver'"></span>
+									<span class="fa fa-door" ng-if="vm.order.shipping.type == 'cash_on_delivery'"></span>
+									<span class="fa fa-building" ng-if="vm.order.shipping.type == 'collect_instore'"></span>
+									{{ vm.order_type }}
+								</td>
+							</tr>
+							<tr>
+								<td>Date ordered:</td>
+								<td>{{ vm.order.date_created | date }}</span></td>
+							</tr>
+							<tr>
+								<td><i class="fa fa-info" tooltip="This is the date when the order will automatically be deleted" tooltip-trigger="mouseover" tooltip-placement="right" ></i>Expire Date:</td>
+								<td>{{ vm.order.expire_date | date }}</span></td>
+							</tr>
+
+						</tbody>
+					</table>
+				</div>
+				<div class="col-md-6" >
+					<accordion close-others="vm.closeOtherAccordions" >
+					    <!-- Products Ordered -->
+					    <accordion-group  is-open="vm.showProductsAccordion" >
+					      <accordion-heading >
+					      	<span class="fa fa-shopping-cart"></span> Products Ordered
+					      </accordion-heading>
+					      <span >{{ vm.order.items.length }} Products Ordered<a ng-click="vm.showProducts()" class="btn btn-default btn-tiny btn-block pull-right">Show all Products</a></span>
+					    </accordion-group>
+					    <!-- End of products ordered -->
+					    <!-- Shipping details -->
+					    <accordion-group  is-open="vm.showShippingAccordion" >
+					      <accordion-heading >
+					      	<span class="fa fa-truck"></span> Shipping Details
+					      </accordion-heading>
+					      <div class="" >
+					      	<table class="table table-responsive" >
+					      		<tbody>
+					      			<tr>
+					      				<td>Type</td>
+					      				<td><span ng-bind="vm.order_type" ></span></td>
+					      			</tr>
+					      			<tr>
+					      				<td>Fullname</td>
+					      				<td><span ng-bind="vm.order.shipping.fullname" ></span></td>
+					      			</tr>
+					      			<tr>
+					      				<td>Phone</td>
+					      				<td><span ng-bind="vm.order.shipping.phone_number" ></span></td>
+					      			</tr>
+					      			<tr>
+					      				<td>Collection Code</td>
+					      				<td><span ng-bind="vm.order.shipping.collection_code" ></span></td>
+					      			</tr>
+					      			<tr>
+					      				<td>Is Ready ?</td>
+					      				<td><span ng-bind="vm.order.shipping.is_ready  == true ? 'Yes' : 'No'" ></span></td>
+					      			</tr>
+					      			<tr>
+					      				<td>Is dispatched ?</td>
+					      				<td><span ng-bind="vm.order.shipping.is_dispatched == true ? 'Yes' : 'No'" ></span></td>
+					      			</tr>
+					      			<tr >
+					      				<td>Deliver to</td>
+					      				<td><span ng-bind="vm.order.shipping.city" ></span>/<span ng-bind="vm.order.shipping.country"></span></td>
+					      			</tr>
+					      			<tr>
+					      				<td>Address</td>
+					      				<td><span ng-bind="vm.order.shipping.address" ></span></td>
+					      			</tr>
+					      			
+					      		</tbody>
+						    </table>
+					      </div>
+					    </accordion-group>
+					    <!-- End of shipping details -->
+					    <!-- Shopper info 
+					    <accordion-group  is-open="vm.showShopperAccordion" >
+					      <accordion-heading >
+					      	<span class="fa fa-user"></span> Shopper Info
+					      </accordion-heading>
+					      This content is straight in the template.
+					    </accordion-group>
+					     End of shopper info -->
+					    <!-- Transaction details -->
+					    <accordion-group is-open="vm.showTransactionAccordion" >
+					    	<accordion-heading >
+					    		<span class="fa fa-credit-card" ></span> Transaction info
+					    	</accordion-heading>
+					    	<table class="table table-responsive" >
+						    	<tbody>
+						    		<tr>
+						    			<td>Payment Gateway</td>
+						    			<td><span >{{ vm.order.transaction.payment_gateway }}</td>
+						    		</tr>
+						    		<tr>
+						    			<td>Amount received</td>
+						    			<td><span >{{ vm.order.transaction.amount | currency }}</span></td>
+						    		</tr>
+						    		<tr>
+						    			<td>Time received</td>
+						    			<td>{{ vm.order.transaction.time_paid }}</td>
+						    		</tr>
+						    		<tr>
+						    			<td>Transaction ID</td>
+						    			<td>#{{ vm.order.transaction.transaction_id }}</td>
+						    		</tr>	
+						    	</tbody>
+					    	</table>
+					    </accordion-group>
+					    
+					    
+					  
+  					</accordion>
+				</div>	 
+			</div>
+		</div>
+	</div>
+	<div class="col-md-3" >
+		<div class="well" >
+			<label>Actions</label>
+			<div ng-if="vm.permissionEdit" >
+				<a ng-click="vm.completeOrder()" popover="Resends the order details to the customer allowing him/her to pay. " popover-trigger="mouseenter" class="btn btn-block btn-success " ng-if=" vm.order.status == 'pending'  " ><span class="fa fa-thumbs-up"></span> Remind customer</a>
+				<br/>
+				<button ng-click="vm.cancelOrder()"  ng-if="vm.order.status == 'pending' && vm.order.status != 'cancelled'" class="btn btn-block btn-warning" ><span class="fa fa-warning"></span> Cancel Order</button>
+				<br/>
+				<p ng-if="vm.order.status == 'pending'">
+				To delete this order, you must first cancel the order.
+				</p>
+				<button ng-click="vm.deleteOrder()" ng-hide="vm.order.status == 'paid'" ng-disabled="vm.order.status != 'cancelled'" class="btn btn-block btn-danger" ><span class="fa fa-warning"></span> Delete Order</button>
+				<br/>
+				<a ng-click="vm.contactCustomer()" popover="Contact the customer using email or sms" popover-trigger="mouseenter" class="btn btn-block btn-default tooltips" title="Contact the customer of this order" ><span class="fa fa-envelope" ></span> Contact Customer</a>
+				<br/>
+				<a ng-href="#/pos/receipt-maker/{{ vm.order.order_id }}" popover="Generate a receipt for this transaction. The receipt can only be printed out." popover-trigger="mouseenter" class="btn btn-block btn-default" ><span class="fa fa-file-o"></span> Make receipt</a>
+				<br/>
+				<button ng-click="vm.archiveOrder()" ng-show="vm.order.status == 'paid'" ng-disabled="vm.order.shipping.is_dispatched != true && vm.order.shipping.type == 'deliver'" class="btn btn-block btn-info" tooltip="Manually archive this order. It will be automatically archived within 2 weeks of receiving payment. " tooltip-trigger="mouseenter" ><span class="fa fa-archive"></span> Move to archive</button>
+				
+				<hr/>
+				<div class="alert alert-danger" ng-if="vm.order.status == 'paid' && vm.order.shipping.type == 'deliver'  && vm.order.shipping.is_dispatched == '0' " >
+					<label>Shipping Details</label>
+					<p>Deliver the order to the customer</p>
+					<br/>
+					<a ng-click="vm.dispatchOrder()" class="btn btn-block btn-info"  ng-disabled="vm.order.shipping.is_dispatched == true"><span class="fa fa-truck"></span> Dispatch Delivery</a>
+					<br/>
+					<a ng-click="vm.setOrderShipped()" tooltip="If you handling your own shipments, set it as shipped, NB: You must then contact the customer with the shipping details" tooltip-trigger="mouseenter" class="btn btn-block btn-success"  ng-disabled="vm.order.shipping.is_dispatched == true"><span class="fa fa-check"></span> Set as shipped</a>
+					
+				</div>
+				<br/>
+				<div  ng-if="vm.order.status == 'paid' && vm.order.shipping.is_dispatched == false && vm.order.shipping.type == 'collect_instore'" >
+					<label>Collect in store</label>
+					<button class="btn btn-block btn-default" tooltip="Update OneShop records to indicate that this order has been collected by the customer" tooltip-trigger="mouseenter"  ng-click="vm.setOrderShipped()"><i class="fa fa-check"></i> Set order collected</button>
+				</div>
+				<br/>
+				<a ng-click="" ng-if="vm.order.status == 'paid'" popover="Refund the customer for this order. " popover-trigger="mouseenter" class="btn btn-block btn-default" ><span class="fa fa-refresh"></span> Refund Customer </a>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- View ordered items modal -->
+<script type="text/ng-template" id="viewOrderedProducts.html">
+	<div class="modal-header">
+        <h3 class="modal-title"><i class="fa fa-shopping-cart" ></i> Ordered Products<a  class="close" ng-click="vm.cancel()" >&times;</a></h3>
+    </div>
+	<div class="modal-body" >
+		<p>Remember that you should be able to fulfill all orders you place. Make sure you have these products in you inventory</p>
+		<div class="input-group" >
+			<div class="input-group-addon" ><i class="fa fa-search"></i></div>
+			<input type="text" placeholder="Search for a product here" class="form-control" ng-model="vm.file_search" />
+		</div>
+		<div class="row well" style="max-height: 400px;" ng-repeat="item in vm.order.items | filter:vm.file_search " >
+
+			
+                <div class="" >
+                	<div class="col-md-4 col-sm-2 col-xs-10"  style="margin-top: 5px;"   >
+                    <img  alt="{{ item.image.meta + ' ' + item.image.filename + ' | ' + item.image.ext }}" ng-src="{{ vm.image_url( item.product.images[0] ) }}" class="thumbnail" style="width: 100%; height: 160px;">
+                    </div>
+                    <div class="col-md-8 col-sm-10 col-xs-10" >
+                        <h4>{{ item.product.name }}  <span style="font-weight: bold; color: red; float: right;" ng-if="item.is_deleted">Deleted Product</span></h4>
+                        <h5>{{ item.price | currency }}
+                        <span class="pull-right"> {{ item.price_per_item | currency }} x {{ item.qty }}</span></h5>
+                        <table class="table table-striped" >
+                        	<thead>
+                        		<tr>
+                        			<td>Attribute</td>
+                        			<td>Option</td>
+                        		</tr>
+                        	</thead>
+                        	<tbody >
+                        		<tr ng-repeat="attr in item.attributes">
+                        			<td>{{ attr.option }}</td>
+                        			<td>{{ attr.value }}</td>
+                        		</tr>
+                        	</tbody>
+                        </table>
+                        <div class="btn-group btn-block">
+                            <a class="btn btn-default " target="_blank" href="/shop/product/{{ item.product.product_id }}"  btn-radio="'product_image'"><i class="fa fa-external-link"></i> View Product</a>
+                            <label class="btn btn-default "  btn-radio="'shop_image'"><i class="fa fa-cubes"></i> {{ item.product.stock_left }} in stock</label>
+                            <label class="btn btn-default "  btn-radio="'user_image'"><i class="fa fa-history"></i> {{ item.product.stock_ordered }} ordered</label>
+                            <label class="btn btn-default "  btn-radio="'product_file'"><i class="fa fa-dollar"></i> {{ item.product.stock_sold }} sold</label>
+                        </div>
+                        
+                    </div>   
+
+                </div>
+            </div>
+		</div>
+	</div>
+</script>
+<!-- Send customer a message modal -->
+<script type="text/ng-template" id="sendCustomerMessage.html">
+	<div class="modal-header">
+        <h3 class="modal-title"><i class="fa fa-shopping-cart" ></i> Send customer a message<a  class="close" ng-click="vm.close()" >&times;</a></h3>
+    </div> 
+
+	<div class="modal-body" ng-hide=" vm.isProcessing ">
+		<p>Sending spam messages to your customers wont improve your sales. It will cause distrust and may lead to your account being suspended.</p>
+		<div class="row" >
+			<div class="col-xs-4"  >
+				<label>Message</label>
+				<select class="form-control" ng-model="vm.message" >
+					<option value="email" >Email</option>
+					<option value="sms" >Sms </option>
+				</select>
+			</div>
+			<div class="col-xs-4" ng-if="vm.message != 'sms'" >
+				<label>Type</label>
+				<select class="form-control"  ng-model="vm.type" >
+					<option value="info" >General</option>
+					<option value="success" >Success</option>
+					<option value="warning" >Warning</option>
+					<option value="error" >Error</option>
+				</select>
+			</div>
+			
+			<div class="col-xs-8" ng-if="vm.message == 'sms'" >
+				<i class="fa fa-warning"></i> Maximum sms length is 450 characters or 3 Sms pages. <br/>
+				<strong>Make sure you have sms credit in your account, otherwise the sms wont be sent.</strong>
+			</div>					
+		</div>
+		<div class="row" >	
+			<div class="col-xs-12" ng-if="vm.message != 'sms'" >
+				<label>Title</label>
+				<input type="text" ng-model="vm.title"  class="form-control" placeholder="Only valid for email" />
+			</div>
+			
+		</div>
+		<label>Message</label>
+		<textarea ng-wig="vm.text" ></textarea>
+	</div>
+	<div class="modal-body" ng-show=" vm.isProcessing " >
+		<h4 class="text-center" >Sending message...</h4>
+		<p class="text-center"> Please wait while sending {{ vm.message }} to customer. </p>
+	</div>
+	<div class="modal-footer" >
+		<button class="btn btn-default pull-right" ng-disabled="vm.isProcessing" ng-if="vm.is_ready()" ng-click="vm.send()" ><i class="fa fa-envelope"></i> Send message</button>
+	</div>	
+</script>
+<!-- dispatch order modal -->
+<script type="text/ng-template" id="dispatchOrder.html">
+	 
+	<div class="modal-header">
+        <h3 class="modal-title"><i class="fa fa-truck" ></i> OneShop Shipping Wizard <a  class="close" ng-click="vm.cancel()" >&times;</a></h3>
+    </div> 
+	<div class="modal-body" >
+		<wizard on-finish="finishedWizard()"> 
+		    <wz-step title="Package Goods">
+		        
+		        <legend>Welcome to Order Shipment Wizard</legend>
+		        <div class="row">
+		        	
+		        	<div class="col-sm-12 col-md-8" >
+				        
+				        <legend><small><i class="fa fa-archive"></i> Packaging</small></legend>
+						<p>Securely and carefully package all the goods purchased by the customer into one packaging e.g a cardboard box. Make sure you add all goods and then securely seal the package.<b>Make sure all your goods fit into one packaging</b></p> 
+						<div class="row well"  >
+							<div class="col-sm-6 " >
+								<h4>Weight</h4>
+								<label class="label label-info" title="Weight of Packaging + Contents  ">Gross Weight </label>
+								<div class="input-group" >
+									<input type="number" class="form-control" ng-model="vm.consignment.package.weight" />
+									<span class="input-group-addon" title="Kilograms. To convert grams to kilograms divide grams by 1000. ">KG</span>
+								</div>
+								<br/>
+								<div class="row" >
+									<div class="col-xs-6" >
+										<h5 class="text-center">{{ vm.consignment.package.weight }} Kilograms</h5>
+									</div>
+									<div class="col-xs-6" >
+										<h5 class="text-center">{{ vm.consignment.package.weight * 1000 }} Grams</h5>
+									</div>
+								</div>
+								<label class="label label-info">Packaging Type</label>
+								<select class="form-control" >
+									<option value='cardboard' >Cardboard box</option>
+									<option value='plastic' >Plastic</option>
+									<option value='metal' >Metal or Aliminium</option>
+									<option value='other' >Other</option>
+								</select>
+								
+							</div>
+							<div class="col-sm-6" >
+								<h4>Dimensions</h4>
+								<label class="label label-info" title="Length in centimetres">Length</label>
+								<div class="input-group" >
+									<input type="number" class="form-control" ng-model="vm.consignment.package.dimensions.l" />
+									<span class="input-group-addon" title="Centimetres. To convert metres to centimetres multiply metres by 100. ">Cm</span>
+								</div>
+								<label class="label label-info" title="Width in centimetres">Width</label>
+								<div class="input-group" >
+									<input type="number" class="form-control" ng-model="vm.consignment.package.dimensions.w" />
+									<span class="input-group-addon" title="Centimetres. To convert metres to centimetres multiply metres by 100. ">Cm</span>
+								</div>
+								<label class="label label-info" title="Height in centimetres">Height</label>
+								<div class="input-group" >
+									<input type="number" class="form-control" ng-model="vm.consignment.package.dimensions.h" />
+									<span class="input-group-addon" title="Centimetres. To convert metres to centimetres multiply metres by 100. ">Cm</span>
+								</div>
+							</div>
+						</div>
+						<div class="row well" >
+							<div class="col-md-3 col-xs-6" >
+								<label class="label label-info" >Contents Type</label>
+								<input type="text" ng-model="vm.consignment.package.packaging.type" class="form-control" placeholder="i.e Electronics, Foods, Medicine..etc" />
+							</div>
+							<div class="col-md-3 col-xs-6" >
+								<label class="label label-warning"  >Is Fragile</label>
+								<select class="form-control" ng-model="vm.consignment.package.contents.fragile">
+									<option value='0' >No</option>
+									<option value='1' >Yes</option>
+								</select>
+							</div>
+							<div class="col-md-3 col-xs-6" >
+								<label class="label label-warning" >Is Liquid</label>
+								<select class="form-control" ng-model="vm.consignment.package.contents.liquid" >
+									<option value='0' >No</option>
+									<option value='1' >Yes</option>
+								</select>
+							</div>
+							<div class="col-md-3 col-xs-6" >
+								<label class="label label-danger" >Is Medical</label>
+								<select class="form-control" ng-model="vm.consignment.package.contents.medical" >
+									<option value='0' >No</option>
+									<option value='1' >Yes</option>
+								</select>
+							</div>
+							
+						</div>
+
+					</div>
+					<div class="col-sm-12 col-md-4" >
+		        		<h4 class="label label-primary"> Order Details</h4>
+		        		<table class="table table-striped" >
+		        			<tbody>
+		        				<tr>
+		        					<td>Order ID</td>
+		        					<td># {{ vm.order.order_id }}</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Amount</td>
+		        					<td>{{ vm.order.total | currency }}</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Items Ordered</td>
+		        					<td>{{ vm.order.items.length }}</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Date Ordered</td>
+		        					<td>{{ vm.order.date_created }}</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Date Paid</td>
+		        					<td>{{ vm.order.transaction.time_paid }}</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Customer</td>
+		        					<td>{{ vm.order.shipping.fullname }}</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Contacts</td>
+		        					<td>{{ vm.order.shipping.phone_number }}<br/>{{ vm.order.shipping.email }}</td>
+		        				</tr>
+		        			</tbody>
+		        		</table>
+
+		        		<button class="btn btn-info btn-block pull-right" ng-disabled="! vm.isStepReady(1)" type="submit" wz-next >Continue <i class="fa fa-arrow-right"></i></button>
+
+		        	</div>	
+				</div>
+		        
+		    </wz-step>
+		    <wz-step title="Delivery Location">
+		        <legend><i class="fa fa-building"></i> Pickup -> Delivery details</legend>
+		        <div class="row">
+		        	
+		        	<div class="col-sm-12 col-md-8" >
+				        
+				        <p>Provide contact information to contact both the sender and the receiver.</p> 
+						<div class="panel panel-warning" >
+							<div class="panel-heading" >
+								Sender <i class="fa fa-arrow-right"></i> 
+							</div>
+							<div class="panel-body" ng-if="!vm.changeShopAddress">
+							<p>By default OneShop sets the pickup address to the address of your store. You can change this.</p> 
+							<button class="btn btn-block btn-default" ng-click="vm.changeShopAddress=true;" >Change pickup location</button>
+							</div>
+							<div class="panel-body" collapse="!vm.changeShopAddress" >
+								<div class="row"  >
+									<div class="col-md-6" >
+										
+										<label class="label label-info">Country</label>
+										<select class="form-control" ng-model="vm.consignment.route.source.country" >
+											<option value='ZW' >Zimbabwe</option>
+										</select>
+										<br/>
+										<label class="label label-info">City/Town</label>
+										<input type="text" ng-model="vm.consignment.route.source.city" placeholder="Bulawayo" class="form-control" />
+										<br/>
+										
+										
+										
+										
+									</div>
+									<div class="col-md-6" >
+										
+										
+										<label  class="label label-info">Suburb</label>
+										<input type="text" class="form-control" ng-model="vm.consignment.route.source.suburb" placeholder="12 Humbl Avenue,Suite 3" />
+										<br/>
+										<label class="label label-info">Address</label>
+										<input type="text" ng-model="vm.consignment.route.source.address" class="form-control" placeholder="12 Humbl Avenue,Suite 3" />
+									</div>
+
+											
+								</div>
+							</div>
+						</div>
+						<div class="panel panel-success" >
+							<div class="panel-heading" >
+								<span class="pull-right"><i class="fa fa-arrow-right"></i> Receiver </span> 
+							</div>
+							<div class="panel-body" >
+								<div class="row"  >
+									<div class="col-md-6" >
+										<label class="label label-info">Country</label>
+										<select class="form-control" ng-model="vm.consignment.route.destination.country" >
+											<option value='ZW' >Zimbabwe</option>
+										</select>
+										<br/>
+										<label class="label label-info">City/Town</label>
+										<input type="text" ng-model="vm.consignment.route.destination.city" placeholder="Bulawayo" class="form-control" />
+										
+
+										<label class="label label-info">Extra Information</label>
+										<textarea class="form-control" ng-model="vm.consignment.route.comments" ></textarea>
+									</div>
+									<div class="col-md-6" >
+										
+										
+										<label  class="label label-info">Suburb</label>
+										<input type="text" ng-model="vm.consignment.route.destination.suburb" class="form-control" placeholder="12 Humbl Avenue,Suite 3" />
+										<br/>
+										<label  class="label label-info">Address</label>
+										<input type="text" ng-model="vm.consignment.route.destination.address" class="form-control" placeholder="12 Humbl Avenue,Suite 3" />
+									</div>
+																
+											
+								</div>
+							</div>
+						</div>		
+						
+
+					</div>
+					<div class="col-sm-12 col-md-4" >
+		        		<h4 class="label label-primary"> Order Details</h4>
+		        		<table class="table table-striped" >
+		        			<tbody>
+		        				<tr>
+		        					<td>Order ID</td>
+		        					<td># {{ vm.order.order_id }}</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Amount</td>
+		        					<td>{{ vm.order.total | currency }}</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Items Ordered</td>
+		        					<td>{{ vm.order.items.length }}</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Date Ordered</td>
+		        					<td>{{ vm.order.date_created }}</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Date Paid</td>
+		        					<td>{{ vm.order.transaction.time_paid }}</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Customer</td>
+		        					<td>{{ vm.order.shipping.fullname }}</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Contacts</td>
+		        					<td>{{ vm.order.shipping.phone_number }}<br/>{{ vm.order.shipping.email }}</td>
+		        				</tr>
+		        			</tbody>
+		        		</table>
+
+		        		<button class="btn btn-info btn-block pull-right" ng-disabled="! vm.isStepReady(2)" type="submit" wz-next >Continue <i class="fa fa-arrow-right"></i></button>
+
+		        	</div>	
+				</div>
+		    </wz-step>
+		    
+		    <wz-step title="Review and Dispatch">
+		        <legend><i class="fa fa-eye"></i> Review and dispatch</legend>
+
+		        <div class="row">
+		        	
+		        	<div class="col-sm-12 col-md-8" >
+					    
+					    <accordion close-others="true">
+					    	<!-- Package -->
+					    	<accordion-group  >
+					    		<accordion-heading>
+					    			<h4><i class="fa fa-archive"></i> Package</h4>
+					    		</accordion-heading>
+					    		<table class="table table-striped" >
+							    	<thead style="font-weight: bold;">
+							    		<th>
+							    			<tr>
+								    			<td>Weight</td>
+								    			<td>Length</td>
+								    			<td>Width</td>
+								    			<td>Height</td>
+								    			<td>Volume</td>
+								    		</tr>
+								    	</th>
+								    </thead>		
+							    	<tbody>
+							    		<tr>
+							    			<td>{{ vm.consignment.package.weight }} Kg</td>
+							    			<td>{{ vm.consignment.package.dimensions.l }} cm</td>					   
+							    			<td>{{ vm.consignment.package.dimensions.w }} cm</td>
+							    			<td>{{ vm.consignment.package.dimensions.h }} cm</td>
+							    			<td>{{ vm.consignment.package.dimensions.l * vm.consignment.package.dimensions.w * vm.consignment.package.dimensions.h }} cm<sup>3</sup></td>
+							    		</tr>
+							    	</tbody>	
+							    </table>
+							    <table class="table table-striped" >
+							    	<tbody>
+							    		<tr  style="font-weight: bold;">
+							    			<td>Packaging</td>
+							    			<td>Contents</td>
+							    			<td>Fragile</td>
+							    			<td>Liquid</td>
+							    			<td>Medical</td>
+							    		</tr>
+							    		<tr>
+							    			<td>{{ vm.consignment.package.packaging.type }}</td>
+							    			<td>{{ vm.consignment.package.contents.type }}</td>
+							    			<td>{{ vm.boolToEnglish(vm.consignment.package.contents.fragile) }}</td>
+							    			<td>{{ vm.boolToEnglish(vm.consignment.package.contents.liquid) }}</td>
+							    			<td>{{ vm.boolToEnglish(vm.consignment.package.contents.medical) }}</td>
+
+							    		</tr>
+							    	</tbody>	
+							    </table>
+					    	</accordion-group>
+					    	
+					    	<!-- Route -->
+					    	<accordion-group  >
+					    		<accordion-heading>
+					    			<h4><i class="fa fa-building"></i>  Pickup -> Delivery</h4>
+					    		</accordion-heading>
+					    		<label class="label-warning">Source</label>
+							    <table class="table table-striped" >
+							    	
+							    	<tbody>
+							    		<tr style="font-weight: bold;" >
+							    			<td>Address</td>
+							    			<td>Suburb</td>
+							    			<td>City</td>
+							    			<td>Country</td>
+							    		</tr>
+							    		<tr>
+							    			<td>{{ vm.consignment.route.source.address }}</td>					   
+							    			<td>{{ vm.consignment.route.source.suburb }}</td>
+							    			<td>{{ vm.consignment.route.source.city }}</td>
+							    			<td>{{ vm.consignment.route.source.country }}</td>
+							    		</tr>
+							    	</tbody>	
+							    </table>
+							    <label class="label-success">Destination</label>
+							    <table class="table table-striped" >
+							    	<tr style="font-weight: bold;">
+							    		<td>{{ vm.consignment.contacts.receiver.fullname }}</td>
+							    		<td>{{ vm.consignment.contacts.receiver.email }}</td>
+							    		<td>{{ vm.consignment.contacts.receiver.phone }}</td>
+							    	</tr>
+							    </table>
+							    <table class="table table-striped" >
+							    	
+							    	<tbody>
+							    		<tr style="font-weight: bold;">
+							    			<td>Address</td>
+							    			<td>Suburb</td>
+							    			<td>City</td>
+							    			<td>Country</td>
+							    		</tr>
+							    		<tr>
+							    			<td>{{ vm.consignment.route.destination.address }}</td>					   
+							    			<td>{{ vm.consignment.route.destination.suburb }}</td>
+							    			<td>{{ vm.consignment.route.destination.city }}</td>
+							    			<td>{{ vm.consignment.route.destination.country }}</td>
+							    		</tr>
+							    	</tbody>	
+							    </table>
+					    	</accordion-group>
+					    	<!-- Contact -->
+					    	<accordion-group >
+					    		<accordion-heading>
+					    			<h4><i class="fa fa-phone" ></i> Contact details</h4>
+					    		</accordion-heading>
+					    		<div class="alert alert-danger">
+					    		We recommend you first contact the customer before making changes to these values.
+					    		</div>
+					    		<div class="row" >
+					    			<div class="col-xs-12" >
+						    			<label>Alternative Receiver Email</label>
+						    			<input type="email" ng-model="vm.consignment.security.alt_rcvr_phone_number" class="form-control" />
+						    			<label>Alternative Receiver Phone</label>
+						    			<input type="text" ng-model="vm.consignment.security.alt_rcvr_email" class="form-control" /> 
+					    			</div>
+					    		</div>
+					    		<div class="row" >
+					    			<div class="col-xs-6" >
+					    				<label class="label label-danger" >Strict Delivery</label>
+					    					
+					    			</div>
+					    		</div>
+					    		<div class="row" >	
+					    			<div class="col-xs-12" >
+					    				<p>A strict delivery will only be delivered to the person who made the order and no-one else. *Depends on the agent you choose*</p>
+					    				<select class="form-control"  ng-model="vm.consignment.security.strict_delivery">
+					    					<option value="0" selected >No</option>
+					    					<option value="1" >Yes</option>
+					    				</select>
+					    			</div>	
+					    		</div>
+					    	</accordion-group>
+					    	<!-- Quotation -->
+					    	<accordion-group  >
+					    		<accordion-heading><h4><i class="fa fa-calculator"></i> Calculate costs</h4></accordion-heading>
+					    		<div ng-show="! vm.quotations.length && ! vm.isGettingPrices" >
+					    			<p>Oneshop works with several delivery and courier services for you convenience. OneShop does not do the actual shipping but merely dispatches it to a third party.</p>
+					    			<button class="btn btn-block btn-default" ng-click="vm.quoteMe()" ><i class="fa fa-undo"></i> Get quotations</button>
+					    		</div>
+					    		<h5 class="text-center" ng-show="vm.isGettingPrices">Calculating prices....</h5>
+					    		<p ng-show="vm.quotations.length">Select a shipping provider you like and dispatch the order</p>
+							    <div class="panel panel-default" ng-hide="vm.isGettingPrices || vm.quotations.length == 0" >
+							    	<div class="panel-body" >
+							    		<div class="row" ng-repeat="quote in vm.quotations" >
+							    			<div class="col-md-3" >
+							    				<img src="{{ quote.logo }}" class="img-responsive" style="margin-left: auto; margin-right: auto;"  />
+							    			</div>
+							    			<div class="col-md-9" >
+							    				<legend><small>{{ quote.provider }}<span class="pull-right" >{{ quote.price | currency }}</span></small></legend>
+							    				<p>{{ quote.message }}</p>
+							    				<button class="pull-right btn btn-primary " ng-click="vm.dispatch(quote.provider)" >Dispatch using {{ quote.provider }}</button>
+							    				<br/>
+							    			</div>
+							    		</div>
+							    	</div>		
+							    </div> 
+					    	</accordion-group>
+
+					    	
+
+					    </accordion>
+					    	
+					</div>
+					<div class="col-sm-12 col-md-4" >
+		        		<h4 class="label label-primary"> Order Details</h4>
+		        		<table class="table table-striped" >
+		        			<tbody>
+		        				<tr>
+		        					<td>Order ID</td>
+		        					<td># {{ vm.order.order_id }}</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Amount</td>
+		        					<td>{{ vm.order.total | currency }}</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Items Ordered</td>
+		        					<td>{{ vm.order.items.length }}</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Date Ordered</td>
+		        					<td>{{ vm.order.date_created }}</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Date Paid</td>
+		        					<td>{{ vm.order.transaction.time_paid }}</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Customer</td>
+		        					<td>{{ vm.order.shipping.fullname }}</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Contacts</td>
+		        					<td>{{ vm.order.shipping.phone_number }}<br/>{{ vm.order.shipping.email }}</td>
+		        				</tr>
+		        			</tbody>
+		        		</table>
+
+		        	</div>	
+				</div>
+		    </wz-step>
+		</wizard>
+		<!--<div class="row" >
+			<div class="col-md-6" >
+				<legend><small><i class="fa fa-help-circle"></i> How it works?</small></legend>
+				
+				<h4 class="label label-primary"><i class="fa fa-sort-numeric-asc"></i> Step 2 - Measure the package</h4>
+					<p>Find the gross mass ( total weight of packaging and contents ) in Kilograms and measure the length,width and height of the packaging in centimetres. </p>
+				<h4 class="label label-primary"><i class="fa fa-building"></i> Step 3 - Enter delivery details</h4>
+					<p>Enter where the delivery should be collected from and who it will be delivered to. You can also include extra contact details</p>	
+				<h4 class="label label-primary"><i class="fa fa-archive"></i> Step 4 - Extra information</h4>
+					<p>Provide any extra information.</p>
+				<h4 class="label label-primary"><i class="fa fa-archive"></i> Step 5 - Review and dispatch</h4>
+					<p>OneSHop works with several shipping providers to calculate the cost of your delivery as well as sending the tracker information to the customer.</p>		
+			</div>
+			<div class="col-md-6" >
+				<legend>OneShop Shipping Wizard</legend>
+			</div>
+		</div>-->
+	</div>
+	<div class="modal-footer" >
+
+	</div>
+</script>	

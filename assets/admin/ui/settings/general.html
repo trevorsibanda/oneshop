@@ -1,0 +1,350 @@
+
+<div class="row">
+	<div class="col-lg-12">
+		<ol class="breadcrumb">
+			<li><i class="fa fa-wrench"></i><a ng-href="#/settings/general">Settings</a></li>
+			<li><i class="fa fa-certificate"></i>General</li>						  	
+		</ol>
+	</div>
+</div>
+<div class="row"  >
+	<div class="col-md-8" >
+		<div class="alert alert-default" ng-if="vm.subscription.type != 'premium' " >
+			You are currently subscribed to the {{ vm.subscription.type }} plan. To benefit from all the features of OneShop, upgrade your account to Premium <br/><a ng-href="#/settings/account/upgrade" class="btn btn-primary pull-right"><i class="fa fa-bookmark"></i> Upgrade your account</a><br/>
+		</div>
+		<tabset justified="true" ng-hide="vm.isProcessing" >
+		    <tab >
+		    	<tab-heading> <i class="fa fa-certificate"></i> General</tab-heading>
+		    	<div class="row" >
+		    		<div class="col-md-12" >
+		    			<h5>Welcome to OneShop</h5>
+		    			<div class="panel panel-primary" >
+		    				<div class="panel-body" >
+		    					<label>Shop Name</label>
+			    					<input type="text" ng-model="vm.shop.name" placeholder="Your shop name" popover="Your shop's name. This will be displayed on your website and should be unique and easy to remember " popover-trigger="focus" class="form-control" />
+			    				<label>TagLine</label>
+			    					<input type="text" ng-model="vm.shop.tagline" placeholder="" class="form-control" popover="Your unique and catchy tagline. For example if you sell sweets it might be 'Sweetest sweets for your sweet tooth' or  something cleverer :)" popover-trigger="focus" />
+			    				<label>Keywords</label>
+			    					<input type="text" ng-model="vm.shop.keywords" placeholder="" class="form-control" />	
+			    				<label>Short description</label>
+			    					<input type="text" ng-model="vm.shop.short_description" placeholder="Your shop's description" popover="Type a short description about your shop. This will be shown on search results such as Google" popover-trigger="focus" class="form-control" />
+			    				<label>Long description</label>
+			    					<textarea ng-wig="vm.shop.description" ></textarea>
+			    				<label>Legal Trading Name</label>
+			    					<input type="text" ng-model="vm.shop.trading_name" placeholder="" class="form-control" popover="Your legal trading name as registered. Skip if you are not a registered company" popover-trigger="focus" />
+			    								
+		    				</div>
+		    			</div>
+		    		</div>
+		    	</div>
+		    </tab>
+		    <tab >
+		    	<tab-heading> <i class="fa fa-phone"></i> Contact</tab-heading>
+		    	<div class="row" >
+		    		<div class="col-md-12" >
+		    			<h5>Give your customers an easy way to contact you!</h5>
+		    			<div class="panel panel-primary" >
+		    				<div class="panel-body" >
+				    			
+				    			<label>Telephone</label>
+				    				<input type="text" class="form-control" ng-model="vm.shop.telephone" placeholder="" popover="Your phone number" popover-trigger="focus" />
+				    			<label>Mobile Phone</label>
+				    				<input type="text" class="form-control" ng-model="vm.shop.contact_phone" placeholder="+263..." popover="This is your company Whatsapp number" popover-trigger="focus" />
+				    			<label>Contact Email</label>
+				    				<input type="email" class="form-control"  ng-model="vm.shop.contact_email"  placeholder="myemail@company.com" popover="This is the email address shown to the public and people can use to contact you. Messages from the ccontact us pageare also sent here" popover-trigger="focus" />
+				    			
+				    			<label>Country</label>
+				    				<select class="form-control" ng-model="vm.shop.country">
+				    					<option value='ZW' >Zimbabwe</option>
+				    				</select>
+				    			<label>City</label>
+				    				<input type="text" ng-model="vm.shop.city" class="form-control" />		
+				    			<label>Address</label>
+				    				<textarea ng-wig="vm.shop.address" ></textarea>		
+				    			<legend>Administrative contacts</legend>		
+				    			<p>These contact details aare not shared publicly and are only used for internal communications</p>
+				    			<label><i class="fa fa-envelope"></i> Notify SMS</label>
+				    			<p>Use a seperate number to receive SMS updates.</p>
+				    			<input type="text" class="form-control" ng-model="vm.settings.contact.notify_sms" />
+				    			<br/>
+
+				    			<label>SMS Sender ID</label>
+				    				<input type="text" class="form-control"  ng-model="vm.settings.contact.sms_sender_id"  placeholder="263SHOP" popover="Customise the SMS Sender ID for all SMS communications through your shop. Please note that you cannot change this if you are on the free account and the sender id you choose will be first verified and vetted by 263Shop staff." popover-trigger="focus" />
+
+				    			
+
+				    		</div>
+				    	</div>			
+		    		</div>
+		    	</div>
+		    </tab>
+		    <tab >
+		    	<tab-heading> <i class="fa fa-link"></i> Domain</tab-heading>
+		    	<div class="row" >
+		    		<div class="col-md-12" >
+		    			<h5>You can use a free subdomain provided by OneShop or you can register and use your own domain</h5>
+		    			<div class="panel panel-primary" >
+		    				<div class="panel-body" >
+				    			
+				    			<label>Subdomain</label>
+				    			<div class="input-group">
+                                  <span class="input-group-addon">HTTP://</span>
+                                  <input type="text" ng-disabled="!vm.change_subdomain" ng-model="vm.shop.subdomain" class="form-control" placeholder="my-shop" autofocus>
+                                  <span class="input-group-addon">.263shop.co.zw<i class="fa fa-{{ vm.isSubdomainOk() ? 'check' : 'warning' }}"></i></span>
+                                </div>
+                                <span ng-show="vm.change_subdomain" >
+	                                <b style="color: green;" ng-show="vm.subdomain_available">Congrats, the subdomain is available!</b>
+	                                <b style="color: red;" ng-show="vm.subdomain_available === false">Sorry, the subdomain is already taken!</b>
+	                                <b style="color: purple;" ng-show="vm.checking_subdomain">Checking if subdomain is available...</b>
+	                                <b ng-if="vm.check_domain_err" ><br/>{{ vm.check_domain_err }}</b>
+                            	</span>
+                                
+                                <br/>
+                                <button class="btn btn-tiny pull-right btn-default" ng-disabled="vm.checking_subdomain" ng-click="vm.changeSubDomain()">
+                                	<span ng-if="vm.change_subdomain"><i class="fa fa-save"></i> Save new subdomain</span>
+                                	<span ng-if="!vm.change_subdomain"><i class="fa fa-key"></i> Change subdomain</span>
+                                </button>
+                                <br/>
+                                <!-- Custom domain -->
+                                <br/>
+                                <div >
+					    			<label>Custom domain</label>
+					    			<div class="row">
+					    				<div class="col-xs-3" >
+					    					<label>Subdomain</label>
+					    					<input type="text" ng-model="vm.domain.subdomain" class="form-control" placeholder="myshop"  autofocus>
+					    				</div>	
+					    				<div class="col-xs-6" >
+					    					<label>Domain</label>
+					    					<input type="text" ng-model="vm.domain.domain" class="form-control" placeholder="mycompany.com"  autofocus/>
+					    				</div>
+					    				<div class="col-xs-3">
+					    					<label>TLD</label>
+					    					<select class="form-control" ng-model="vm.domain.tld" >
+		                                  		<option>.co.zw</option>
+		                                  		<option>.com</option>
+		                                  		<option>.co</option>
+		                                  		<option>.net</option>
+		                                  		<option>.org</option>
+		                                  		<option>.biz</option>
+	                                  		</select>
+					    				</div>
+					    			</div>
+					    			<div class="row" >
+					    				<h5 class="text-center" >Your subdomain is {{ vm.shop.alias }}</h5>
+
+					    			</div>		
+
+
+	                                <div class="row">
+	                                	<div class="col-sm-6">
+	                                		<label><i class="fa fa-link" ></i> Use this custom subdomain</label>
+						    				<select class="form-control" ng-model="vm.shop.use_alias" >
+						    					<option value="0">No </option>
+						    					<option value="1" >Yes</option>
+						    					
+						    				</select>
+						    			</div>
+						    			<div class="col-sm-6"  >
+						    				<br style="margin-top: 5px;" />
+						    				<button ng-show="vm.dns_ok && vm.isCustomSubdomainOk()" ng-click="vm.saveCustomDomain()" class="btn btn-tiny btn-block btn-success"><i class="fa fa-check"></i> Save settings</button>
+						    				<button  ng-hide="vm.checking_dns || vm.dns_ok  " ng-click="vm.checkDNS()" class="btn btn-tiny btn-block btn-info"><i class="fa fa-eye"></i> Check DNS Settings</button>
+						    				<b style="color: purple;" ng-show="vm.checking_dns"> Checking DNS settings for {{vm.shop.alias}} ...<br/></b>
+						    				
+						    				<b ng-show="vm.dns_ok " style="color: green;">DNS records properly setup for {{ vm.shop.alias }}</b>
+	                                		<b ng-hide="vm.dns_ok || vm.checking_dns " style="color: red;">DNS records not setup properly. DNS changes may take up to 48 hours to propagate</b>
+
+						    			</div>
+						    			
+						    		</div>		
+									<small>You will not be able to use a custom domain until we verify that  the DNS settings you provided are valid.</small> 
+						    		
+	                                <br/><br/>
+	                                
+
+	                                	
+	                                <label>DNS Settings</label>
+	                                <div class="well" >
+	                                	<p>After setting your custom domain, please login to your domain management portal and add the record listed below. If you have trouble doing this <a href="" target="_blank">Read this article on setting up your shop with a custom domain</a>. </p>
+	                                	<table class="table table-striped" >
+	                                		<thead>
+	                                			<tr>
+	                                				<th>Record Type</th>
+	                                				<th>Name</th>
+	                                				<th>Value</th>
+	                                			</tr>	
+	                                		</thead>
+	                                		<tbody>
+	                                			<tr>
+	                                				<td><strong>CNAME</strong></td>
+	                                				<td>{{ vm.shop.alias }}</td>
+	                                				<td>{{ vm.oneshop_ip_addr }}</td>
+	                                			</tr>	
+	                                		</tbody>	
+	                                	</table>
+	                                	
+	                                	<br/>
+	                                	<!--
+	                                	<label>If you want to use naked domain.</label>
+	                                	<p>
+	                                		If you want your shop to be <strong>myshop.com</strong> instead of <strong>www.myshop.com</strong> enter the following details instead
+	                                	</p>	
+	                                	<table class="table table-striped" >
+	                                		<thead>
+	                                			<tr>
+	                                				<th>Record Type</th>
+	                                				<th>Name</th>
+	                                				<th>Value</th>
+	                                			</tr>	
+	                                		</thead>
+	                                		<tbody>
+	                                			<tr>
+	                                				<td><strong>A</strong></td>
+	                                				<td>@</td>
+	                                				<td>{{ vm.oneshop_ip_addr }}</td>
+	                                			</tr>	
+	                                		</tbody>	
+	                                	</table> 
+										-->
+	                                </div>
+                                </div>
+
+                                <!-- End custom domain settings -->
+                                
+				    		</div>
+				    	</div>			
+		    		</div>
+		    	</div>
+		    </tab>
+		    <tab >
+		    	<tab-heading> <i class="fa fa-facebook"></i> Social </tab-heading>
+		    	<div class="row" >
+		    		<div class="col-md-12" >
+		    			<h5>Not having a social media presence can kill your business!</h5>
+		    			<div class="panel panel-primary" >
+		    				<div class="panel-body" >
+				    			
+				    			<label><i class="fa fa-facebook"></i> Facebook Page URL</label>
+				    				<input type="url" ng-model="vm.settings.contact.facebook_page" class="form-control" placeholder="http://facebook.com/my_page" />
+				    			<br/>
+				    			<label><i class="fa fa-twitter"></i> Twitter Handle</label>
+				    				<div class="input-group" >
+				    					<div class="input-group-addon" >
+				    						@
+				    					</div>
+				    					<input type="text" class="form-control" placeholder="https://twitter.com/my_handle" ng-model="vm.settings.contact.twitter_handle" />
+				    				</div>	
+				    			<br/>
+				    			<label><i class="fa fa-linkedin"></i> Linked In</label>	
+				    				<input type="url" class="form-control" ng-model="vm.settings.contact.linkedin_url" />
+				    			<br/>	
+				    			<label><i class="fa fa-skype"></i> Skype ID</label>
+				    				<input type="text" class="form-control" placeholder="oneshopzw" ng-model="vm.settings.contact.skype_id" />
+				    			<br/>
+
+				    		</div>
+				    	</div>			
+		    		</div>
+		    	</div>
+		    </tab>
+		    <tab >
+		    	<tab-heading> <i class="fa fa-certificate"></i> Extra</tab-heading>
+		    	<div class="row" >
+		    		<div class="col-md-12" >
+		    			<h5>Set basic shop settings!</h5>
+		    			<div class="panel panel-primary" >
+		    				<div class="panel-body" >
+				    			
+				    			<label><i class="fa fa-calendar"></i> Operate days</label>
+				    				<select class="form-control" ng-model="vm.shop.operate_days">
+				    					<option value="business_days">Business days ( Mon - Fri )</option>
+				    					<option value="business_and_sat">Business days + Saturday</option>
+				    					<option value="business_and_sunday">Business days + Sunday</option>
+				    					<option value="weekends">Weekends only </option>
+				    					<option value="everyday">Everyday</option> 
+				    				</select>
+				    				<br/>
+				    			<label><i class="fa fa-clock-o"></i> Open and Close time</label>
+				    				<div class="row" >
+				    					<div class="col-md-6" >
+				    						<label>Open time</label>
+				    						<timepicker ng-model="vm.shop.open_time" ></timepicker>
+				    					</div>
+				    					<div class="col-md-6" >
+				    						<label>Close time</label>
+				    						<timepicker ng-model="vm.shop.close_time" ></timepicker>
+				    					</div>
+				    				</div>
+				    			<br/>	
+				    			
+				    		</div>
+				    	</div>			
+		    		</div>
+		    	</div>
+		    </tab>	
+		</tabset>
+		<div class="panel panel-default">
+			<div class="panel-body" >
+				<button class="btn pull-right btn-default" ng-click="vm.saveSettings()"><i class="fa fa-save"></i> Update settings</button>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4 well " >
+		<label><b>Account Status</b></label>
+		<style> .logo{ margin-left: auto; margin-right: auto; }</style>
+		<img ng-src="{{ vm.image_url( vm.shop.logo ) }}" class="img-responsive logo" alt="{{ vm.shop.name }}" />
+		<button class="btn btn-xs btn-block btn-default" ng-click="vm.changeLogo()"><i class="fa fa-photo"></i> Change Logo</button>
+		<div class="alert alert-info" ng-if="vm.isChanged" >
+			<p>Your settings are not saved. </p>
+			<button class="btn btn-block btn-primary"><i class="fa fa-save"></i> Save settings</button>
+		</div>
+		<table class="table table-striped" >
+			<tbody>	
+				<tr>
+					<td>Account Status</td>
+					<td>
+						<b style="color: green;" ng-show="vm.shop.is_active"><i class="fa fa-check"></i> Active</b>
+						<b style="color: red;" ng-hide="vm.shop.is_active"><i class="fa fa-remove"></i> Not Active</b>
+						
+					</td>
+				</tr>
+				<tr>
+					<td>Current Subscription</td>
+					<td>
+						<b style="color: green;"><i class="fa fa-bookmark"></i> {{ vm.subscription.type | uppercase }}</b>
+						<a ng-href="#/settings/upgrade_account" ng-hide="vm.subscription.type == 'premium'" class="btn btn-xs btn-block btn-default"><i class="fa fa-arrow-up"></i> Upgrade plan</a>
+					</td>
+
+				</tr>
+				<tr>
+					<td>Expires</td>
+					<td><b style="color: green;"><i class="fa fa-check"></i> {{ vm.subscription.date_expires }}</b></td>
+				</tr>
+				
+				<tr>
+					<td>Site status</td>
+					<td>
+						<b style="color: green;" ng-hide="vm.shop.is_suspended"><i class="fa fa-check"></i> Published</b>
+						<b style="color: red;" ng-show="vm.shop.is_suspended"><i class="fa fa-remove"></i> Not Published</b>
+					</td>
+				</tr>				
+				
+			</tbody>
+		</table>
+		<p ng-if="!vm.shop.is_active">
+			Your shop is currently inactive - this means that only you 
+		</p>
+		<label>Publish Shop</label>
+			<p>Publishing your shop means it will be active and anyone can view your site.<br/> If you choose to unpublish your
+			site, all visitors will be shown a page stating that the site is currently unavailable.</p>
+			<br/>
+			<label>Password</label>
+			<input type="password" class="form-control" ng-model="vm.userPassword" tooltip="You need to enter your password to performthis action" placeholder="REQUIRED !!!" tooltip-trigger="mouseenter" />
+			<br/>
+			<button class="btn btn-warning btn-tiny btn-block" ng-hide="vm.shop.is_suspended" ng-click="vm.unpublishShop()" ><i class="fa fa-warning"></i> Unpublish shop</button>
+			<button class="btn btn-success btn-tiny btn-block" ng-show="vm.shop.is_suspended" ng-click="vm.unpublishShop()" ><i class="fa fa-check"></i> Publish shop</button>
+			
+		</p>	
+	</div>
+</div>
+

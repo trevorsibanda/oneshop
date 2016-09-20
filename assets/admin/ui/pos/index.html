@@ -1,0 +1,210 @@
+<style>
+.text-info{border-left-style:solid; border-left-width:5px; border-left-color:orange; padding:5px 5px 5px 10px; font-size:110%;}
+.box {border-radius: 5px; box-shadow: 1px 2px 10px silver; padding:10px;}
+
+</style>
+<div class="row">
+  <div class="col-lg-9">
+    <ol class="breadcrumb">
+      <li><i class="fa fa-calculator"></i><a ng-href="#/products/browse">Point of Sale</a></li>            
+    </ol>
+    <div class="alert alert-warning visible-xs" >
+      The point of sale app does not work very well on a small screen. We recommend you use a tablet or laptop instead.
+    </div>
+  </div>
+  <div class="col-lg-3" >
+    <div class="btn-group pull-right" dropdown is-open="true">
+      <button type="button" class="btn btn-primary dropdown-toggle" dropdown-toggle >
+        <span class="caret"></span> Quick Menu 
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li><a ng-click="vm.settings()" ><i class="fa fa-wrench"></i> POS Settings</a></li>
+        <li><a href="#/pos/receipt-maker"><i class="fa fa-calculator"></i> Receipt Maker</a></li>
+        
+        <li class="divider"></li>
+        <li><a href="#/tutorial/pos"><i class="fa fa-info-circle"></i> POS Tutorial</a></li>
+
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-body" >
+    <div class="row">
+
+      <div class="col-sm-6">
+          <div class="panel panel-primary">
+            <div class="panel-heading">Select Products
+              <div class="input-group">
+                <input type="search" class="form-control"  autofocus placeholder="Search for a product by name or price" ng-model="vm.product_search" />
+                <span class="input-group-addon" ><a ng-href="" ><i class="fa fa-search" ></i></a></span> 
+              </div>
+            </div>
+            <div class="panel-body"  style="max-height:480px; overflow:auto;" >
+                <div class="row" >
+                    <div class="col-sm-6 col-md-4  column productbox" ng-repeat="product in vm.products | filter:vm.product_search" >
+                        <a ng-click="vm.addItem(product)" >
+                            <img ng-if="vm.pos_settings.images == 'text' " src="http://placehold.it/460x250/e67e22/ffffff&text={{ product.name }}" class="img-responsive">
+                            <img ng-if="vm.pos_settings.images != 'text' " ng-src="{{vm.image_url( product.images[0] );}}" class="img-responsive" style="margin:auto; min-height: 160px; height: 200px; ">
+                            <div class="hidden-xs" >
+                            <div class="producttitle">{{ product.name }}</div>
+                            <div class="productprice"><div class="pull-right"></div><div class="pricetext">{{ product.price | currency }}</div></div>
+                            </div>
+                        </a>
+                    </div>
+                    
+                </div>
+            </div>
+          </div>
+      </div>  
+      <div class="col-sm-6">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <i class="fa fa-calculator"></i> Order Summary
+              <div class="input-group">
+                <input type="search" class="form-control"  autofocus placeholder="Search for a product by name or price" ng-model="vm.order_search" />
+                <span class="input-group-addon" ><a ng-href="" ><i class="fa fa-search" ></i></a></span> 
+              </div>
+            </div>
+            <div class="panel-body" style="max-height:320px; overflow:auto;">
+              <div class="text-warning" ng-hide="vm.order.items.length">
+                Noting ordered yet !
+              </div>
+              <table class="table table-striped" >
+                <thead>
+                  <th>
+                    <tr>
+                      <td>Name</td>
+                      <td>Items</td>
+                      <td>Cost</td>
+                      <td>SubTotal</td>
+                      <td>Action</td>
+                    </tr>
+                  </th>
+                </thead>
+                <tbody>
+                  <tr  ng-repeat=" item in vm.order.items | filter:vm.order_search " >
+                    <td><b>{{item.product.name}}</b></td>
+                    <td><div class="label label-danger b">{{item.qty}}</div></td>
+                    <td>{{ item.price_per_item | currency }}</td>
+                    <td>{{ item.price | currency}}</td>
+                    <td>
+                      <div class="btn-group btn-block" role="group" aria-label="...">
+                        <button class="btn btn-xs btn-default" ng-disabled="" ng-click="vm.subtractQty(item)">
+                          <span  class="fa fa-minus"></span>
+                        </button>
+                        <button  class="btn  btn-xs btn-default" ng-click="vm.addItem(item)">
+                          <span class="fa fa-plus"></span>
+                        </button>
+                         <button  class="btn btn-danger btn-xs"  ng-click="vm.removeItem(item)">
+                          <span class="fa fa-trash"></span>
+                        </button>                     
+                      </div>
+                    </td>
+                  </tr>  
+                </tbody>
+              </table>  
+            </div>
+            <div class="panel-footer" ng-show="vm.order.items.length">
+              <h4 class=" ">Total: {{vm.getSum() | currency }}</h4>
+            </div>
+            <div class="panel-footer" ng-show="vm.order.items.length">
+              <div class="text-muted">
+                Do not let go of customer without taking payment !
+              </div>
+            </div>
+            <div class="pull-right">
+              <br/>
+              <span class="btn btn-default btn-lg" ng-click="vm.clearOrder()" ng-disabled="!vm.order.items.length"><i class="fa fa-refresh"></i> Clear</span>
+              <span class="btn btn-danger btn-lg" ng-click="vm.checkout()" ng-disabled="!vm.order.items.length"><i class="fa fa-credit-card"></i> Checkout</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+<!-- Start settings -->
+<script type="text/ng-template" id="savePosSettings.html">
+  <div class="madl-header" >
+    <i class="fa fa-wrench" ></i> Point of sale settings
+  </div>
+  <div class="modal-body" >
+    
+    <label>Display Images</label>
+    <select class="form-control" ng-model="vm.settings.images" >
+      <option value='text' selected >Text Images</option>
+      <option value='image'>Slideshow Product Images</option>
+    </select>
+
+    <br/>
+    <div class="alert alert-danger" ng-if="vm.settings.images != 'text' " >
+      <i class="fa fa-danger fa-2x"></i> Warning. Showing a slideshow of the images can <b>seriously slow down your computer</b>. Only use this if your computer is extremely fast. <br/>
+      <strong>Do not use if you are using a mobile device or a tablet !</strong><br/>
+      You have been warned.
+    </div>
+    <p>Text images only show the product name as an image with an orange background. Choosing actual product images will show a slide of the products images. Only use this if you in a high bandwidth setting.</p>
+  
+  </div>
+  <div class="modal-footer" >
+    <p>These settings are saved on your browser and will be different if you use a different computer.</p>
+    <br/>
+  </div>
+</script>
+<!-- End settings -->
+<!-- Start Checkout -->
+<script type="text/ng-template" id="checkoutPos.html">
+  <div class="modal-header" >
+    <h4 class="modal-title" >
+    <i class="fa fa-credit-card" ></i> Checkout 
+    <span class="close" ng-click="vm.dismiss()" >&times;</span>
+    <a class="fa fa-question-circle " tooltip="Create the order for the customer and allow them to complete the order later. The customer will receive an email or sms with the link to the order. Do not use this service to spam customers - Your account will be auomatically blocked" tooltip-trigger="mouseenter" ></a>
+    </h4>
+  </div>
+
+  <div class="modal-body" >
+    <div class="row" ng-hide="vm.isProcessing" >
+      <div class="col-xs-12 " >
+        <legend>Fast/Offline Checkout</legend>
+          <div class="panel panel-warning" >
+            <div class="panel-body" >
+              <i class="fa fa-dollar"></i> Accept cash or print quotation. <b>No record stored</b>
+            </div>
+          </div>
+          <label class="label label-primary" >Optional Customer Information</label>
+          <br/>
+          <label>Fullname</label>
+          <input type="text" class="form-control" ng-model="vm.invoice.customer.name" placeholder="Mr J. Moyo" />
+          <label>Phone number</label>
+          <div class="input-group">
+            <span class="input-group-addon" >+</span>
+            <input type="text" class="form-control" ng-model="vm.invoice.customer.phone" placeholder="Mr J. Moyo" />
+          </div>
+          <label>Email Address</label>
+            <input type="email" ng-model="vm.invoice.customer.email" class="form-control" />
+          <div class="row" >
+            <div class="col-xs-6" >
+              <label>Type</label>
+              <select class="form-control" >
+                <option value="quotation">Quotation<option>
+                <option value="payment" >Payment received</option>
+              </select>
+            </div>
+            <div class="col-xs-6" >
+               <label>Order ID</label>
+               <input type="number" class="form-control" ng-model="vm.invoice.order.order_id" />  
+            </div>
+          </div>
+          
+          <br/>  
+          <button class="btn btn-block btn-default" ng-click="vm.offlineOrder()" ><i class="fa fa-print"></i> Print Invoice</button>   
+      </div>
+    </div>
+    <div class="row" ng-show="vm.isProcessing" >
+      <h4 class="text-center" >Placing Order....</h4>
+      <progressbar class="progressbar progressbar-animated" value="50" max="100" ></progressbar>
+    </div>
+  </div>
+</script>
+<!-- End checkout -->

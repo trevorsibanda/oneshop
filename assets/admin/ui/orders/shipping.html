@@ -1,0 +1,128 @@
+<div class="row">
+	<div class="col-lg-12">
+		<ol class="breadcrumb">
+			<li><i class="fa fa-shopping-cart"></i><a ng-href="#/orders/browse">Orders</a></li>
+			<li><i class="fa fa-truck"></i>Shipping</li>						  	
+		</ol>
+	</div>
+</div>
+<div class="row" >
+	<div class="col-md-10" >
+		<div class="panel panel-default" >
+			<div class="panel-body" >
+				<p>Improve your sales and offer great convenience to your customer by delivering directly to their doorstep.<br/>
+				<b>NB: Only pending deliveries are shown.</b></p>
+				<div class="alert alert-success" ng-if="vm.isWorking" >
+					<h4 class="text-center" >Loading....</h4>
+				</div>
+				<tabset justified="true">
+					<tab select="vm.setFilter('deliver')" >
+						<tab-heading>
+							<i class="fa fa-truck" ></i> Deliveries <span class="pull-right">( {{ vm.summary.deliver }} )</span>
+						</tab-heading>
+						<table class="table table-striped" ng-if="vm.type=='deliver'" >
+							<thead>
+								<tr>
+									<th>Agent</th>
+									<th>Date </th>
+									<th>Customer</th>
+									<th>Address</th>
+									<th>Tracker Code</th>
+									
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="delivery in vm.items">
+									<td>{{ delivery.handler }}</td>
+									<td>{{ delivery.date_dispatched | date }}</td>
+									<td>{{ delivery.fullname }}</td>
+									<td>{{ delivery.city + ',' + delivery.suburb + ',' + delivery.address }}</td>
+									<td>{{ delivery.tracker_code }}</td>
+									
+									<td>
+										
+										<a ng-href="#/orders/view/{{ delivery.order_id }}" class="btn btn-xs btn-block btn-default" ><i class="fa fa-eye" ></i> View Order</a>
+										
+									</td>
+								</tr>
+							</tbody>			  		
+						</table>	
+					</tab>
+					<tab select="vm.setFilter('collect_instore')" >
+						<tab-heading>
+							<i class="fa fa-book" ></i>Collection <span class="pull-right">( {{ vm.summary.collect_instore }} )</span>
+						</tab-heading>
+						<table class="table table-striped" ng-if="vm.type=='collect_instore'" >
+							<thead>
+								<tr>
+									<th>Agent</th>
+									<th>Date </th>
+									<th>Customer</th>
+									<th>Address</th>
+									<th>Tracker Code</th>
+									
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="delivery in vm.items">
+									<td>{{ delivery.handler }}</td>
+									<td>{{ delivery.date_dispatched | date }}</td>
+									<td>{{ delivery.fullname }}</td>
+									<td>{{ delivery.city + ',' + delivery.suburb + ',' + delivery.address }}</td>
+									<td>{{ delivery.tracker_code }}</td>
+									
+									<td>
+										
+										<a ng-href="#/orders/view/{{ delivery.order_id }}" class="btn btn-xs btn-block btn-default" ><i class="fa fa-eye" ></i> View Order</a>
+										
+									</td>
+								</tr>
+							</tbody>			  		
+						</table>	
+					</tab>
+					<tab select="vm.setFilter('cash_on_delivery')">
+						<tab-heading>
+							<i class="fa fa-money" ></i>Cash on delivery <span class="pull-right">( {{ vm.summary.cash_on_delivery }} )</span>
+						</tab-heading>
+						<table class="table table-striped" ng-if="vm.type=='cash_on_delivery'" >
+							<thead>
+								<tr>
+									<th>Agent</th>
+									<th>Date </th>
+									<th>Customer</th>
+									<th>Address</th>
+									<th>Tracker Code</th>
+									
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="delivery in vm.items">
+									<td>{{ delivery.handler }}</td>
+									<td>{{ delivery.date_dispatched | date }}</td>
+									<td>{{ delivery.fullname }}</td>
+									<td>{{ delivery.city + ',' + delivery.suburb + ',' + delivery.address }}</td>
+									<td>{{ delivery.tracker_code }}</td>
+									
+									<td>
+										
+										<a ng-href="#/orders/view/{{ delivery.order_id }}" class="btn btn-xs btn-block btn-default" ><i class="fa fa-eye" ></i> View Order</a>
+										
+									</td>
+								</tr>
+							</tbody>			  		
+						</table>	
+					</tab>
+				</tabset>
+
+			</div>
+		</div>
+	</div>
+	<div class="col-md-2 well" >
+		<label>Action</label>
+		<br/>
+		<button class="btn btn-default btn-sm "></button>
+	</div>
+</div>		

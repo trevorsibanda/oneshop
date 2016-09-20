@@ -1,0 +1,8 @@
+POST http://secure.oneshop.co.zw/shipping_api/acknowledge HTTP/1.1
+Host: secure.oneshop.co.zw
+Accept: */*
+Proxy-Connection: Keep-Alive
+Content-Length: 316
+Content-Type: application/x-www-form-urlencoded
+
+{"status":"ok","salt":1438784018,"challenge":"5446f77e0d4a3e05ca427baba3d12bbc","provider":"Foot Soldiers","tracker_code":"837a77c67f31e595516f9612442162f9","order_id":null,"order_challenge":null,"info":"Payment received at Wed, 05 Aug 2015 17:13:38 +0300","url":"http:\/\/tracer.footsoldiers.co.zw\/track?order_id"}

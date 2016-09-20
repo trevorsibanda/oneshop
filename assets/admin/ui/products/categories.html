@@ -1,0 +1,91 @@
+<div class="row">
+	<div class="col-lg-12">
+		<ol class="breadcrumb">
+			<li><i class="fa fa-cubes"></i><a ng-href="#/products/browse">Products</a></li>
+			<li><i class="fa fa-sitemap"></i>Categories</li>						  	
+		</ol>
+	</div>
+</div>
+<h4 ><i class="fa fa-"></i> Product Categories</h4>
+<div class="row" >
+	<div class="col-md-10" >
+		<div class="panel panel-default" >
+			<div class="panel-body" >
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<td>Image</td>
+							<td>Name</td>
+							<td>Description</td>
+							<td>Parent</td>
+							<td>Is Menu?</td>
+							<td>Action</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="cat in vm.categories ">
+							<td><img class="img-responsive" style="max-width: 120px;" ng-src="{{ vm.imageUrl( cat.image ) }}" /></td>
+							<td><a ng-href="{{ vm.categoryUrl( cat ) }}" target="_blank" class="btn btn-block btn-link btn-xs" ><i class="fa fa-globe"></i> {{ cat.name }}</a></td>
+							<td>{{ cat.description }}</td>
+							<td><i class="fa fa-{{ (cat.parent_id > 0) ? 'check' : 'remove' }}" ></i></td>
+							<td><i class="fa fa-{{ (cat.is_menu > 0 ) ? 'check' : 'remove' }}"></i></td>
+							<td>
+								<a ng-href="#/products/view_category/{{ cat.category_id }}" class="btn btn-block btn-default" >View Category Details</a>
+								
+
+							</td>
+						</tr>
+						
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-2 well" >
+		<label>Actions</label>
+		<br/>
+		<button ng-click="vm.addCategory()" ng-if="vm.permissionEdit" class="btn btn-block btn-default"><i class="fa fa-plus"></i> Add category</button>
+		<br/><br/>
+		<a ng-href="#/products/add" ng-if="vm.permissionEdit" class="btn btn-block btn-default" ><i class="fa fa-plus"></i> Add product</a>
+		<a ng-href="#/product/manage-stock" ng-if="vm.permissionEdit" class="btn btn-block btn-default" ><i class="fa fa-cubes"></i> Manage Stock</a>
+		<br/>
+		<a ng-href="#/designer/edit_layout" class="btn btn-block btn-default" ><i class="fa fa-paint-brush"></i> Site Editor</a>
+	</div>
+</div>
+<script type="text/ng-template" id="addProductCategory.html" >
+	<div class="modal-title" >
+	<h3>Add Product Category<span class="close" >&times;</span></h3>
+	</div>
+	<div class="modal-body" >
+		<label>Category Name</label>
+			<input type="text" popover="Keep it simple and short e.g T-Shirts, Laptops, Nike ..." popover=trigger="focus" ng-model="vm.category.name" class="form-control" placeholder="Category Name e.g T-Shirts " required />
+		<label>Description</label>
+			<input type="text" popover="A simple and brief description is best :) " popover-trigger="focus" class="form-control" ng-model="vm.category.description" required placeholder="Description" />
+		<div class="row" >
+			<div class="col-sm-6" >
+				<label>Is Menu ?</label>
+				<select class="form-control" ng-model="vm.category.is_menu" popover="Is this category a menu option ? Menu options are shown in your website as navigation pointers in your website" popover-trigger="mouseenter" >
+					<option value="0" selected>No</option>
+					<option value="1" >Yes</option>
+				</select>
+			</div>
+			<div class="col-sm-6" >
+				<label>Category Image</label>
+				<div  ng-if="! vm.cat_image" >
+					
+					<div class="alert alert-warning" >
+						You must select at least one image !
+					</div>
+					
+				</div>
+				<img ng-if="vm.cat_image" src="{{ vm.imgUrl }}" class="img-responsive" /> 	
+				<button class="btn btn-block btn-default" ng-click="vm.selectImage()" ><i class="fa fa-photo" ></i> Select image</button>
+			</div>
+		</div>
+			
+	</div>
+	<div class="modal-footer" >
+	<button class="btn btn-sm btn-success" ng-if="vm.isReady()" ng-click="vm.addCategory()" >Add Category</button>
+	</div>
+
+</script>

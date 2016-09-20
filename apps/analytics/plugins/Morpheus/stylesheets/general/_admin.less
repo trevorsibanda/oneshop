@@ -1,0 +1,68 @@
+
+.ui-state-highlight {
+    border-color: @color-silver-l80 !important;
+    background: @color-silver-l95 !important;
+    .ui-icon {
+        background-image: url('plugins/Morpheus/images/info.png');
+        background-position: 0 0;
+    }
+}
+
+.adminTable {
+    td {
+        padding: 2px 0;
+    }
+    label {
+        cursor: pointer;
+        min-height: 30px;
+    }
+}
+
+.sites_autocomplete  {
+    vertical-align: middle;
+}
+
+.adminTable a {
+    color: @theme-color-link;
+}
+
+.admin .adminTable a {
+  color: @theme-color-text;
+  text-decoration: underline;
+}
+
+.admin .adminTable .ui-inline-help a {
+  color: @theme-color-link;
+  text-decoration: none;
+}
+
+.addRowSite,
+.addrow {
+    cursor: pointer;
+}
+
+.addrow:hover {
+  text-decoration: underline;
+}
+
+.addrow {
+    margin-top: 16px;
+}
+
+.addRowSite {
+    display: inline-block;
+    margin: 5px 0;
+    text-decoration: none !important;
+    &:before {
+        content: url(plugins/Morpheus/images/add.png) !important;
+    }
+
+    &:hover {
+      text-decoration: underline !important;
+    }
+}
+
+#geoipdb-screen1>div>p {
+    line-height: 1.4em;
+    height: 6em;
+}

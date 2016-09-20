@@ -1,0 +1,30 @@
+{
+	"page":
+	{"home":
+		{
+			"welcome_msg":
+			{
+				"name":"Welcome message",
+				"default":"Welcome to my shop",
+				"type":"text"
+			}		
+		}
+	},
+	"global":
+	{
+		"theme_color" : "green"
+	},
+	"info":
+	{
+		"name" : "Personal Space",
+		"description": "Personal space is a theme designed for personal use. It's ideal if you plan on selling home made products or a small range of products. The theme is responsive and looks nice on mobile, tablet and desktop devices. Try it out",
+		"dir": "personal_space"
+	},
+	"vocabulary":
+	{
+		"blog": "Blog",
+		"product": "Product",
+		"featured_products": "Featured Products",
+		"browse_store": "Browse Store"
+	}
+}

@@ -1,0 +1,183 @@
+<style>
+.text-info{border-left-style:solid; border-left-width:5px; border-left-color:orange; padding:5px 5px 5px 10px; font-size:110%;}
+.box {border-radius: 5px; box-shadow: 1px 2px 10px silver; padding:10px;}
+
+</style>
+<div class="row" >
+  <div class="col-xs-9" >
+    <h3 ><i class="fa fa-calculator" ></i> Point of Sale</h3>
+  </div>
+  <div class="col-xs-3" >
+    <br/>
+    <!-- Single button -->
+    <div class="btn-group pull-right" dropdown is-open="true">
+      <button type="button" class="btn btn-primary dropdown-toggle" dropdown-toggle >
+        <span class="caret"></span> Quick Menu 
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="#"><i class="fa fa-wrench"></i> POS Settings</a></li>
+        <li><a href="#/pos/receipt-maker"><i class="fa fa-calculator"></i> Receipt Maker</a></li>
+        
+        <li class="divider"></li>
+        <li><a href="#/tutorial/pos"><i class="fa fa-info-circle"></i> POS Tutorial</a></li>
+
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-body" >
+    <div class="row">
+
+      <div class="col-sm-6">
+          <div class="panel panel-primary">
+            <div class="panel-heading">Select Products
+              <div class="input-group">
+                <input type="search" class="form-control"  autofocus placeholder="Search for a product by name or price" ng-model="vm.product_search" />
+                <span class="input-group-addon" ><a ng-href="" ><i class="fa fa-search" ></i></a></span> 
+              </div>
+            </div>
+            <div class="panel-body"  style="max-height:480px; overflow:auto;" >
+                <div class="row" >
+                    <div class="col-md-4 column productbox" >
+                        <a ng-click="vm.add(vm.food.coldcoffee)" >
+                            <img src="http://placehold.it/460x250/e67e22/ffffff&text=Cold Coffee" class="img-responsive">
+                            <div class="producttitle">Cold Coffee</div>
+                            <div class="productprice"><div class="pull-right"></div><div class="pricetext">£8.95</div></div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 column productbox">
+                        <a ng-click="vm.add(vm.food.hotcoffee)" >
+                            <img src="http://placehold.it/460x250/e67e22/ffffff&text=HotCoffee" class="img-responsive">
+                            <div class="producttitle">Hot Coffee</div>
+                            <div class="productprice"><div class="pricetext">£8.95</div></div>
+                            <div class="small"></div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 column productbox">
+                        <a ng-click="vm.add(vm.food.coke)" >
+                            <img src="http://placehold.it/460x250/e67e22/ffffff&text=Coke" class="img-responsive">
+                            <div class="producttitle">Coke</div>
+                            <div class="productprice"><div class="pull-right"></div><div class="pricetext">£8.95</div></div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 column productbox">
+                        <a ng-click="vm.add(vm.food.dietcoke)" >
+                            <img src="http://placehold.it/460x250/e67e22/ffffff&text=DietCoke" class="img-responsive">
+                            <div class="producttitle">Diet Coke</div>
+                            <div class="productprice"><div class="pull-right"></div><div class="pricetext">£8.95</div></div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 column productbox">
+                        <a ng-click="vm.add(vm.food.pepsi)" >
+                            <img src="http://placehold.it/460x250/e67e22/ffffff&text=Pepsi" class="img-responsive">
+                            <div class="producttitle">Pepsi</div>
+                            <div class="productprice"><div class="pull-right"></div><div class="pricetext">£8.95</div></div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 column productbox">
+                        <a ng-click="vm.add(vm.food.pizza)" >
+                            <img src="http://placehold.it/460x250/e67e22/ffffff&text=Pizza" class="img-responsive">
+                            <div class="producttitle">Pizza</div>
+                            <div class="productprice"><div class="pull-right"></div><div class="pricetext">£8.95</div></div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 column productbox">
+                        <a ng-click="vm.add(vm.food.donut)" >
+                            <img src="http://placehold.it/460x250/e67e22/ffffff&text=Donut" class="img-responsive">
+                            <div class="producttitle">Donut</div>
+                            <div class="productprice"><div class="pull-right"></div><div class="pricetext">£8.95</div></div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 column productbox">
+                        <a ng-click="vm.add(vm.food.tortilla)" >
+                            <img src="http://placehold.it/460x250/e67e22/ffffff&text=Tortilla" class="img-responsive">
+                            <div class="producttitle">Tortilla</div>
+                            <div class="productprice"><div class="pull-right"></div><div class="pricetext">£8.95</div></div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 column productbox">
+                        <a ng-click="vm.add(vm.food.burger)" >
+                            <img src="http://placehold.it/460x250/e67e22/ffffff&text=Burger" class="img-responsive">
+                            <div class="producttitle">Burger</div>
+                            <div class="productprice"><div class="pull-right"></div><div class="pricetext">£8.95</div></div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 column productbox">
+                        <a ng-click="vm.add(vm.food.samoosa)" >
+                            <img src="http://placehold.it/460x250/e67e22/ffffff&text=Samoosa" class="img-responsive">
+                            <div class="producttitle">Samoosa</div>
+                            <div class="productprice"><div class="pull-right"></div><div class="pricetext">£8.95</div></div>
+                        </a>
+                    </div>
+                    
+                </div>
+            </div>
+          </div>
+      </div>  
+      <div class="col-sm-6">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <i class="fa fa-calculator"></i> Order Summary
+              <div class="input-group">
+                <input type="search" class="form-control"  autofocus placeholder="Search for a product by name or price" ng-model="vm.order_search" />
+                <span class="input-group-addon" ><a ng-href="" ><i class="fa fa-search" ></i></a></span> 
+              </div>
+            </div>
+            <div class="panel-body" style="max-height:320px; overflow:auto;">
+              <div class="text-warning" ng-hide="vm.order.length">
+                Noting ordered yet !
+              </div>
+              <table class="table table-striped" >
+                <thead>
+                  <th>
+                    <tr>
+                      <td>Name</td>
+                      <td>Items</td>
+                      <td>Cost</td>
+                      <td>SubTotal</td>
+                      <td>Action</td>
+                    </tr>
+                  </th>
+                </thead>
+                <tbody>
+                  <tr  ng-repeat=" item in vm.order | filter:vm.order_search " >
+                    <td><b>{{item.item.detail}}</b></td>
+                    <td><div class="label label-danger b">{{item.orderedItemCnt}}</div></td>
+                    <td>{{ item.item.price | currency }}</td>
+                    <td>{{item.totalPrice | currency}}</td>
+                    <td>
+                      <div class="btn-group btn-block" role="group" aria-label="...">
+                        <button class="btn btn-xs btn-default" ng-disabled="" ng-click="vm.subtractItem(item, $index)">
+                          <span  class="fa fa-minus"></span>
+                        </button>
+                        <button  class="btn  btn-xs btn-default" ng-click="vm.addItem(item, $index)">
+                          <span class="fa fa-plus"></span>
+                        </button>
+                         <button  class="btn btn-danger btn-xs"  ng-click="vm.deleteItem($index)">
+                          <span class="fa fa-trash"></span>
+                        </button>                     
+                      </div>
+                    </td>
+                  </tr>  
+                </tbody>
+              </table>  
+            </div>
+            <div class="panel-footer" ng-show="vm.order.length">
+              <h4 class=" ">Total: {{vm.getSum() | currency }}</h4>
+            </div>
+            <div class="panel-footer" ng-show="vm.order.length">
+              <div class="text-muted">
+                Do not let go of customer without taking payment !
+              </div>
+            </div>
+            <div class="pull-right">
+              <span class="btn btn-default" ng-click="vm.clearOrder()" ng-disabled="!vm.order.length">Clear</span>
+              <span class="btn btn-danger" ng-click="vm.checkout()" ng-disabled="!vm.order.length">Checkout</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+  </div>
+</div>

@@ -1,0 +1,6 @@
+cd docs/shadowsocks
+w
+ls-lh
+ls -lh
+./mocks -c mocks.conf start
+./mocks -c mocks.conf start -f

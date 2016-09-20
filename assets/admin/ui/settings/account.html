@@ -1,0 +1,253 @@
+<div class="row">
+    <div class="col-lg-12">
+        <ol class="breadcrumb">
+            <li><i class="fa fa-home"></i><a ng-href="#/settings/general">Settings</a></li>
+            <li><i class="fa fa-laptop"></i>My Account</li>                         
+        </ol>
+    </div>
+</div>     
+<tabset justified="true" >
+    <!-- current sub -->
+    <tab >
+        <tab-heading>
+            <i class="fa fa-asterisk" ></i> Current subscription
+        </tab-heading>
+        <div class="row" >
+            <div class="col-md-12" >
+                <h4>You are currently on the {{vm.plan.name }} </h4>
+            </div>
+            <div class="col-md-4" id="home-box " >
+                <div class="pricing_header"  >
+                    <h2>{{ vm.plan.name }}</h2>
+                    <div class="space"></div>
+                </div>
+                <ul class="list-group">
+                        
+                        <li class="list-group-item" ng-if="vm.plan.custom_domain" ><span class="fa fa-check"></span> Use custom domain</li>
+                        <li class="list-group-item " ng-if="vm.plan.custom_payment_details" ><span class="fa fa-bank"></span> Custom payment gateway</li>
+                        <li class="list-group-item" ng-if="vm.plan.allow_pos"><span class="fa fa-calculator"></span> Point of Sale</li>
+                        <li class="list-group-item" ng-if="vm.plan.allow_analytics"><span class="fa fa-line-chart"></span> Reports and Analytics</li>
+                        <li class="list-group-item"><span class="fa fa-cubes"></span> {{ vm.plan.max_products }} Products</li>
+                        <li class="list-group-item"><span class="fa fa-envelope"></span> {{ vm.plan.sms_credit }} Monthly SMS</li>
+                        
+                        <li class="list-group-item "><span class="fa fa-users"></span> {{ vm.plan.max_users }} Maximum users</li>
+                        
+                        <li  class=" " >
+                            <a class="btn btn-default btn-block btn-info btn-lg" ng-if="vm.current_plan.type != 'free'" ng-click=""><i class="fa fa-external-link"></i> Upgrade </a>
+                        </li> 
+                          
+                </ul>         
+            </div>
+            <div class="col-md-8" >
+                <legend>Account Limits</legend> 
+                <div class="row">
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="info-box red-bg">
+                            <i class="fa fa-envelope"></i>
+                            <div class="count">{{ vm.sub.sms_credit }}</div>
+                            <div class="title">Sms Credit</div>     
+                                            
+                        </div><!--/.info-box--> 
+
+                    </div><!--/.col-->
+                    
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="info-box purple-bg">
+                            <i class="fa fa-cubes"></i>
+                            <div class="count">{{ vm.sub.max_products }}</div>
+                            <div class="title">Products</div>                      
+                        </div><!--/.info-box-->         
+                    </div><!--/.col-->  
+                    
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="info-box green-bg">
+                            <i class="fa fa-truck"></i>
+                            <div class="count">{{ vm.summary.shipping_orders }}</div>
+                            <div class="title">Deliveries</div>                     
+                        </div><!--/.info-box-->         
+                    </div><!--/.col-->
+                    
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="info-box dark-bg">
+                            <i class="fa fa-cubes"></i>
+                            <div class="count">{{ vm.summary.stock_count }}</div>
+                            <div class="title">Stock</div>                      
+                        </div><!--/.info-box-->         
+                    </div><!--/.col-->
+                    
+                </div>
+                
+            </div>
+        </div>            
+    </tab>
+    <!-- subscribe or upgrade -->
+    <tab >
+        <tab-heading >
+            <i class="fa fa-bookmark" ></i> Subscribe or upgrade
+        </tab-heading>
+        <div class="container row" >                       
+            <!-- Pack 2-->
+            <div class="col-md-12" >
+                <h3 class="text-center">Subscribe or upgrade</h3>
+                <p>Choose the package which best suits your business. </p>
+        
+            </div>
+            <div class="col-md-4" id="home-box "  ng-repeat="key in vm.notSorted(vm.plans) " ng-init="plan = vm.plans[key];period=6;">
+                <div class="pricing_header" style="{{ key == 'basic' ? 'background-color: blue;color:white;':'' }}" >
+                    <h2>{{ plan.name }}</h2>
+                    <div class="space"></div>
+                </div>
+                <ul class="list-group">
+                        <li class="list-group-item"><span class="fa fa-check"></span> Secure Payments</li>
+                        <li class="list-group-item"><span class="fa fa-check"></span> Shop Designer</li>
+                        <li class="list-group-item"><span class="fa fa-check"></span> Unlimited bandwidth</li>
+                        
+                        <li class="list-group-item" ng-if="plan.custom_domain" ><span class="fa fa-check"></span> Use custom domain</li>
+                        <li class="list-group-item" ng-if="plan.free_domain"><b><span class="fa fa-check"></span> Free .co.zw domain</b></li>
+                        <li class="list-group-item " ng-if="plan.custom_payment_details" ><span class="fa fa-bank"></span> Custom payment gateway</li>
+                        <li class="list-group-item" ng-if="plan.allow_pos"><span class="fa fa-calculator"></span> Point of Sale</li>
+                        <li class="list-group-item" ng-if="plan.allow_analytics"><span class="fa fa-line-chart"></span> Reports and Analytics</li>
+                        <li class="list-group-item"><span class="fa fa-cubes"></span> {{ plan.max_products }} Products</li>
+                        <li class="list-group-item"><span class="fa fa-envelope"></span> {{ plan.sms_credit }} Monthly SMS</li>
+                        
+                        
+                        
+
+                        
+                        
+                        
+                        <li class="list-group-item "><span class="fa fa-users"></span> {{ plan.max_users }} Maximum users</li>
+                        <li  class="list-group-item " >
+                            <label>Period</label>
+                            <select class="form-control" ng-model="period" >
+                                <option value=12>12 months - {{ plan.amount_year | currency }}</option>
+                                <option value=6>6 months - {{ plan.amount * 6 | currency }}</option>
+                                <option value=3>3 months - {{ plan.amount * 3 | currency }}</option>
+                                <option value=1>1 months - {{ plan.amount | currency }}</option>
+                            </select>
+                        </li>
+                        <li  class=" " >
+                            <a ng-if="key != 'free' && vm.plan != 'free' " class="btn btn-default btn-block btn-primary btn-lg" ng-click="vm.subscribe(key,period)">Subscribe <i class="fa fa-external-link"></i></a>
+                        </li> 
+                        <li class="list-group-item " >
+                            <div class="row" >
+                                <div class="col-md-6" >
+                                    <h4 class="text-center">{{plan.amount|currency}} /month</h4>
+                                </div>
+                                <div class="col-md-6" >
+                                    <h4 class="text-center">{{plan.amount_year |currency}} /year</h4>
+                                </div>
+                            </div>
+                        </li>   
+                </ul>         
+            </div>
+            <hr/>
+            
+          
+        </div>
+    </tab>  
+    <!-- history -->
+    <tab >
+        <tab-heading >
+            <i class="fa fa-history" ></i> Subscription history
+        </tab-heading>
+        <div class="row">
+                <div class="col-md-5">
+                    <div class="panel panel-default">
+                        <div class="panel-heading c-list">     
+                            <b class="">Select a period</b>
+                        </div>
+                        
+                        <div class="row" style="display: block;">
+                            <div class="col-xs-12">
+                                <div class="input-group c-search">
+                                    <input type="text" class="form-control" id="contact-list-search" autofocus placeholder="Search for a shop user" ng-model="vm.search" >
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button"><span class="fa fa-search text-muted"></span></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <ul class="list-group" id="contact-list">
+                            <li class="list-group-item {{ vm.selected_sub.sub_id == sub.sub_id ? 'active' :'' }}" ng-repeat="sub in vm.all_subs | filter:vm.search ">
+                                <a ng-click="vm.select($index )" >
+                                    
+                                    <div class="col-sm-12">
+                                        <span class="name" style="{{ vm.selected_sub.sub_id == sub.sub_id ? 'color: white;' :'' }}">{{ sub.year + '/' + sub.month }}</span><br/>
+                                        <span class="pull-right" style="{{ vm.selected_sub.sub_id == sub.sub_id ? 'color: white;' :'' }}" >{{ sub.type }}</span>
+                                        
+                                        <br/>
+                                        
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </a>
+                            </li>
+                            
+                            
+                        </ul>
+                    </div>
+                    
+                    
+                </div>
+                <div class="col-md-7" >
+                    <div class="row" >
+                        <div class="col-md-1" >
+                            
+                        </div>
+                        <div class="col-md-10" >
+                            <table class="table table-responsive table-striped" style="margin-top: 50px;" >
+                                <tbody>
+                                    <tr>
+                                        <td><i class="fa fa-bookmark"></i> Account Type</td>
+                                        <td>{{ vm.selected_sub.type }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fa fa-clock-o"></i> Period</td>
+                                        <td>{{ vm.selected_sub.year + '/' + vm.selected_sub.month }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fa fa-dollar"></i> Amount </td>
+                                        <td>{{ vm.selected_sub.amount | currency }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fa fa-envelope"></i> Sms Credit</td>
+                                        <td>{{ vm.selected_sub.sms_credit }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fa fa-users"></i> Max Users</td>
+                                        <td><b>{{ vm.selected_sub.max_users }}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fa fa-cubes"></i> Max Products</td>
+                                        <td><b>{{ vm.selected_sub.max_products }}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fa fa-plug"></i> Custom domain</td>
+                                        <td>{{ vm.selected_sub.custom_domain ? 'Yes' :'No' }}</td>
+                                    </tr>
+                                
+                                    <tr>
+                                        <td><i class="fa fa-clock-o"></i> Date Expires(d)</td>
+                                        <td>{{ vm.selected_sub.date_expires | date }}</td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td><i class="fa fa-bank"></i> Custom payment gateway</td>
+                                        <td>{{ vm.selected_sub.custom_payment_details ? 'Yes' :'No' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fa fa-history"></i> Log</td>
+                                        <td>{{ vm.selected_sub.log }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                        </div>
+                    </div>
+                </div>
+
+        </div>        
+    </tab>  
+</tabset>                     
+  

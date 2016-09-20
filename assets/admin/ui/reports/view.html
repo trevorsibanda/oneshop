@@ -1,0 +1,30 @@
+<div class="row">
+	<div class="col-lg-12">
+		<ol class="breadcrumb">
+			<li><i class="fa fa-line-chart"></i><a ng-href="#/reports">Reports</a></li>
+			<li><i class="fa fa-{{ vm.iconType() }}"></i>{{ vm.reportTypeName }}</li>						  	
+		</ol>
+	</div>
+</div>
+<div class="row" >
+	<div class="col-md-4" >
+		
+	</div>
+</div>
+<div class="row" >
+	<div class="col-md-4">
+		<label>Report Type</label>
+		<select class="form-control" ng-model="vm.report_type">
+			<option value="products">Products</option>
+			<option value="orders" >Orders</option>
+			<option value="payments">Payments</option>
+			<option value="shipping">Shipments</option>
+
+		</select>
+	</div>
+	<div class="col-md-8" >
+		<canvas  class="chart chart-canvas chart-pie" data="[1,23,34,12,34,54,34,23,12,43,54,34]"
+  labels="['2006', '2007', '2008', '2009', '2010', '2011', '2012']" ></canvas> 
+  	</div>
+  	
+</div>  	

@@ -1,0 +1,153 @@
+<div class="row">
+	<div class="col-lg-12">
+		<ol class="breadcrumb">
+			<li><i class="fa fa-wrench"></i><a ng-href="#/settings/general">Settings</a></li>
+			<li><i class="fa fa-credit-card"></i>Payment</li>						  	
+		</ol>
+	</div>
+</div><div class="row" >
+	
+	<div class="col-md-8" >
+		<div class="panel panel-default" >
+			<div class="panel-body" > 
+				  <p>Select from one or more of the supported payment gateways below and enter the details you obtained from the gateway provider. <b>You can use a maximum of two payment gateways at a time</b></p>
+				  <div class="row" >
+			  			<div class="col-md-4" >
+			  				<div class="info-box orange-bg" style="height: 400px; height: inherit;">
+								<i class="fa fa-bank" style="width:100%;"></i>
+								<h1><br/></h1><br/>	
+							</div>
+						</div>			
+			  			<div class="col-md-8" >
+			  				<label>Primary Gateway</label>
+				  			<select class="form-control" ng-model="vm.payment.primary_gateway">
+							  	<option value='' selected >None</option>
+							  	
+							  	<option value='paynow'  ng-if="vm.payment.secondary_gateway != 'paynow'" >PayNow</option>
+							  	<option value='pay4app' ng-if="vm.payment.secondary_gateway != 'pay4app'">Pay4App</option>
+							  	
+							</select>
+							<label>Secondary Gateway</label>
+				  			<select class="form-control" ng-model="vm.payment.secondary_gateway" >
+							  	<option value='' selected >None</option>
+							  	<option value='paynow' ng-if="vm.payment.primary_gateway != 'paynow'">PayNow</option>
+							  	<option value='pay4app' ng-if="vm.payment.primary_gateway != 'pay4app'">Pay4App</option>
+							</select>
+							<p ng-if="!vm.payment.secondary_gateway.length && !vm.payment.primary_gateway.length">
+							<i class="fa fa-info-circle"></i> You must specify at least one payment gateway, otherwise you will not be able to publish your shop until then.
+							</p>
+			  			</div>
+			  		</div>
+				  	
+				  <!-- PayNow -->
+				  <div class="panel panel-warning" ng-if=" vm.payment.primary_gateway == 'paynow' " >
+				  		<div class="panel-heading" >
+				  			Configure PayNow
+				  		</div>
+				  		<div class="panel-body" >
+				  			<label>Intergration ID</label>
+				  				<input class="form-control" ng-model="vm.payment.primary_api_key" type="text" placeholder="Merchant ID" />
+				  				
+				  			<label>Intergration Key</label>
+				  				<div class="input-group" >
+				  					
+				  					<input class="form-control" ng-model="vm.payment.primary_api_secret"  type="{{vm.showPayNowKey ? 'text' : 'password' }}" placeholder="Your secret key" />
+				  					<span class="input-group-addon" ><a ng-click="vm.showPayNowKey = ! vm.showPayNowKey" >{{vm.showPayNowKey ? 'Hide Key' : 'Show Key' }}</a></span>
+				  				</div>	
+				  			<p>To use PayNow, signup to the <a href="https://paynow.co.zw/" target="_blank" >PayNow website</a> as a merchant, you will receive an API key and secret sent to your email address, enter the details in 263Shop and save. Request your intergration to be set to live, make sure your site is published.</p> 	
+				  		</div>
+				  </div>
+				  <div class="panel panel-warning" ng-if=" vm.payment.secondary_gateway == 'paynow'  " >
+				  		<div class="panel-heading" >
+				  			Configure PayNow
+				  		</div>
+				  		<div class="panel-body" >
+				  			<label>Intergration ID</label>
+				  				
+				  				<input class="form-control" ng-model="vm.payment.secondary_api_key"  type="text" placeholder="Merchant ID" />
+				  			<label>Intergration Key</label>
+				  				<div class="input-group" >
+				  					<input class="form-control" ng-model="vm.payment.secondary_api_secret"  type="{{vm.showPayNowKey ? 'text' : 'password' }}" placeholder="Your secret key" />
+				  					
+				  					<span class="input-group-addon" ><a ng-click="vm.showPayNowKey = ! vm.showPayNowKey" >{{vm.showPayNowKey ? 'Hide Key' : 'Show Key' }}</a></span>
+				  				</div>	
+				  			<p>To use PayNow, signup to the <a href="https://paynow.co.zw/" target="_blank" >PayNow website</a> as a merchant, you will receive an API key and secret sent to your email address, enter the details in 263Shop and save. Request your intergration to be set to live, make sure your site is published.</p> 	
+				  		</div>
+				  </div>
+				  <!-- Pay4App -->
+				  <div class="panel panel-success" ng-if="vm.payment.primary_gateway == 'pay4app' || vm.payment.secondary_gateway == 'pay4app' " >
+				  		<div class="panel-heading" >
+				  			Configure Pay4App
+				  		</div>
+				  		<div class="panel-body" >
+				  			<label>API Merchant ID</label>
+				  				<input class="form-control" ng-model="vm.payment.primary_api_key" ng-if="vm.payment.primary_gateway == 'pay4app'" type="text" placeholder="Merchant ID" />
+				  				<input class="form-control" ng-model="vm.payment.secondary_api_key" ng-if="vm.payment.secondary_gateway == 'pay4app'" type="text" placeholder="Merchant ID" />
+				  			<label>API Secret Key</label>
+				  				<div class="input-group" >
+				  					<input class="form-control" ng-model="vm.payment.secondary_api_secret" ng-if="vm.payment.secondary_gateway == 'pay4app'" type="{{vm.showPay4AppKey ? 'text' : 'password' }}" placeholder="Your secret key" />
+				  					<input class="form-control" ng-model="vm.payment.primary_api_secret" ng-if="vm.payment.primary_gateway == 'pay4app'" type="{{vm.showPay4AppKey ? 'text' : 'password' }}" placeholder="Your secret key" />
+				  					<span class="input-group-addon" ><a ng-click="vm.showPay4AppKey = ! vm.showPay4AppKey" >{{vm.showPay4AppKey ? 'Hide Key' : 'Show Key' }}</a></span>
+				  				</div>
+
+				  			<p>To use Pay4App visit the <a href="https://pay4app.com/" target="_blank">Pay4App website</a> and signup as a merchant, once your account has been activated enter the merchant ID and merchant secret provided. Do not set result url or transfer pending url settings, please make sure you set the callback url below. 
+				  			<br/>
+				  			<label>Callback Url</label>
+				  			<input type="url" value="https://secure.263Shop.co.zw/api/endpoint/pay4app" readonly class="form-control" />
+				  			<p>In your Pay4App merchant account,Under Settings > API Settings . Copy the value shown above into the Callback url field and save your Pay4App settings</p>
+
+				  			</p> 
+				  			<div class="alert alert-warning" >
+				  				<i class="fa fa-warning"></i> Pay4App will not work unless you add the callback url in your Pay4App Merchant account. 
+				  			</div>		
+				  		</div>
+				  </div>
+				  <!-- Pay4App -->
+				  <div class="panel panel-success" ng-if="vm.payment.secondary_gateway == 'pay4app' " >
+				  		<div class="panel-heading" >
+				  			Configure Pay4App
+				  		</div>
+				  		<div class="panel-body" >
+				  			<label>API Merchant ID</label>
+				  				
+				  				<input class="form-control" ng-model="vm.payment.secondary_api_key"  type="text" placeholder="Merchant ID" />
+				  			<label>API Secret Key</label>
+				  				<div class="input-group" >
+				  					<input class="form-control" ng-model="vm.payment.secondary_api_secret" type="{{vm.showPay4AppKey ? 'text' : 'password' }}" placeholder="Your secret key" />
+				  					
+				  					<span class="input-group-addon" ><a ng-click="vm.showPay4AppKey = ! vm.showPay4AppKey" >{{vm.showPay4AppKey ? 'Hide Key' : 'Show Key' }}</a></span>
+				  				</div>
+
+				  			<p>To use Pay4App visit the <a href="https://pay4app.com/" target="_blank">Pay4App website</a> and signup as a merchant, once your account has been activated enter the merchant ID and merchant secret provided. Do not set result url or transfer pending url settings, please make sure you set the callback url below. 
+				  			<br/>
+				  			<label>Callback Url</label>
+				  			<input type="url" value="http://secure.263Shop.co.zw/api/endpoint/pay4app" readonly class="form-control" />
+				  			<p>In your Pay4App merchant account,Under Settings > API Settings . Copy the value shown above into the Callback url field and save your Pay4App settings</p>
+
+				  			</p> 
+				  			<div class="alert alert-warning" >
+				  				<i class="fa fa-warning"></i> Pay4App will not work unless you add the callback url in your Pay4App Merchant account. 
+				  			</div>		
+				  		</div>
+				  </div>
+				 
+				  <br/>
+				  <button class="btn btn-sm btn-primary pull-right" ng-click="vm.saveChanges()"><i class="fa fa-save"></i> Save settings</button>	
+				  <br/><br/>
+				   <div class="alert alert-warning" >
+				  	Make sure you enter the correct details and make sure they are active as 263Shop does not validate these settings. We recommend you place an order and pay using the gateway configured to confirm that they work. 
+				  </div>
+			  
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4" >
+		<img src="/assets/admin/img/stock/payment_gateway.png" class="img-responsive" />
+		<p>
+		263Shop allows you to use our predefined gateways or to use your own custom payment gateways. You might want to use a custom payment gateway if you want funds to be settled directly into your bank account or because of company policies. If you choose to use a custom payment gateway you must signup to the provider and obtaint you Merchant and API keys.<br/>Make sure you verify the details as 263Shop does not necessarily check whether the details are valid. 
+		</p>
+		<p>
+				<b>A payment gateway</b> is an e-commerce application service provider service that authorizes credit card payments for e-businesses, online retailers, bricks and clicks, or traditional brick and mortar. It is the equivalent of a physical point of sale terminal located in most retail outlets</p>
+				<br/>
+	</div>
+</div>

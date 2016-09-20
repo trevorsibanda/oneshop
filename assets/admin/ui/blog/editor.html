@@ -1,0 +1,62 @@
+<div class="row">
+	<div class="col-lg-12">
+		<ol class="breadcrumb">
+			<li><i class="fa fa-book"></i><a ng-href="#/blog/browse">Blog</a></li>
+			<li><i class="fa fa-pencil"></i>Write new blog post</li>						  	
+		</ol>
+	</div>
+</div>
+<div class="row" ng-hide="vm.isProcessing" >
+	<div class="col-md-10" >
+		<div class="panel panel-default" >
+			<div class="panel-body" >
+				
+				<div class="row" >
+					
+					<div class="col-md-8" >
+						<label>Blog Title</label>
+						<input type="text" ng-model="vm.post.title" required placeholder="Your blog title" class="form-control" />
+						<div class="row" >
+							<div class="col-sm-6" >
+								<label>Author</label>
+								<input type="text" ng-model="vm.post.author" style="margin-top: 5px;" required placeholder="Author name" class="form-control" />
+							</div>
+							<div class="col-sm-6" >
+								<label>Tags</label>
+								<tags-input ng-model="vm.post.tags" ></tags-input>
+							</div>
+						</div>
+					</div>		
+					<div class="col-md-4" >
+						<div class="alert alert-danger" ng-hide="vm.post.image" >
+							<p>You need to select at least one image for your blog post !</p>
+						</div>
+						<img ng-if="vm.post.image" ng-src="{{ vm.image_url(vm.post.image )}}" class="img-responsive" />
+						<button  class="btn btn-block btn-danger" ng-click="vm.selectImage()"><i class="fa fa-photo"></i> Select Image</button>
+					</div>
+					
+				</div>
+				
+				<br/>
+				<textarea ng-wig="vm.post.html" ></textarea>
+				<br/>
+				<button class="btn btn-success pull-right " ng-hide="vm.editMode" ng-click="vm.addArticle()" ng-if="vm.isReady()"><i class="fa fa-save"></i> Save article</button>
+				<button class="btn btn-success pull-right " ng-if="vm.editMode" ng-click="vm.updateArticle()" ng-click="vm.addArticle()" ng-if="vm.isReady()"><i class="fa fa-save"></i> Save updated article</button>
+				<br/> 
+			</div>
+		</div>	
+	</div>
+	<div class="col-md-2 well" >
+		<div class="" >
+				<label><b>Actions</b></label>
+				<br/>
+				
+				<button ng-disabled="vm.editMode" class="btn btn-block btn-default" ng-click="vm.saveDraft()"><i class="fa fa-pencil"></i> Save draft</button>
+				<p>The draft article will only be available on this computer and will be lost if you logoff
+				</p>
+		</div>
+	</div>
+</div>
+<div class="row" ng-show="vm.isProcessing" >
+	<h1 class="text-center" style="margin-top: 40px;">Saving article please wait...</h1>
+</div>

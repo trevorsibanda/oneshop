@@ -1,0 +1,241 @@
+<div class="row">
+    <div class="col-lg-12">
+        <ol class="breadcrumb">
+            <li><i class="fa fa-shopping-cart"></i><a ng-href="#/orders/browse">Orders</a></li>
+            <li><i class="fa fa-list"></i>Browse</li>                            
+        </ol>
+    </div>
+</div>
+<div class="row" >
+	<div class="col-md-10" >
+		<div class="panel panel-default ">
+        <tabset class="panel-body" justified="true" >
+            <!-- Pending orders -->
+            <tab select="vm.setFilter('pending')"  active="vm.selectPending" >
+                <tab-heading><i class="fa fa-history" ></i> Pending ( {{ vm.orderInfo.pending }} )</tab-heading>
+                <table class="table table-striped" >
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Amount</th>
+                            <th>Items</th>
+                            <th>Status</th>
+                            <th>Type</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="order in vm.orders" ng-class="'warning'" ng-if="vm.filter=='pending'" >
+                            <td>#{{ order.order_id }}</td>
+                            <td>{{ order.shipping.fullname }}</td>
+                            <td>{{ order.total | currency }}</td>
+                            <td>{{ order.items.length }}</td>
+                            <td>{{ order.status | uppercase }}</td>
+                            <td>{{ vm.orderType(order) }}</td>
+                            <td>
+                                <a ng-href="#/orders/view/{{ order.order_id }}" class="btn btn-xs btn-block btn-primary" ><i class="fa fa-eye"></i> View Order</a>
+                                <a ng-href="#/pos/receipt-maker/{{ order.order_id }}" class="btn btn-xs btn-block btn-default" ><i class="fa fa-file-o"></i> Print Receipt</a>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </tab>
+            <!-- End pending -->
+            <!-- Paid orders -->
+            <tab select="vm.setFilter('paid')">
+                <tab-heading><i class="fa fa-dollar"></i> Paid ( {{ vm.orderInfo.paid }} )</tab-heading>
+                <table class="table table-striped" >
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Amount</th>
+                            <th>Items</th>
+                            <th>Status</th>
+                            <th>Type</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="order in vm.orders" ng-class="'success'" ng-if="vm.filter=='paid'" >
+                            <td>#{{ order.order_id }}</td>
+                            <td>{{ order.total | currency }}</td>
+                            <td>{{ order.items.length }}</td>
+                            <td>{{ order.status | uppercase }}</td>
+                            <td>{{ vm.orderType(order) }}</td>
+                            <td>
+                                <a ng-href="#/orders/view/{{ order.order_id }}" class="btn btn-xs btn-block btn-primary" ><i class="fa fa-eye"></i> View Order</a>
+                                <a ng-href="#/pos/receipt-maker/{{ order.order_id }}" class="btn btn-xs btn-block btn-default" ><i class="fa fa-file-o"></i> Print Receipt</a>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </tab>
+            <!-- End paid -->
+
+            <!-- Cancelled orders -->
+            <tab select="vm.setFilter('cancelled')">
+                <tab-heading><i class="fa fa-truck"></i> Cancelled ( {{ vm.orderInfo.cancelled }} )</tab-heading>
+                <table class="table table-striped" >
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Amount</th>
+                            <th>Items</th>
+                            <th>Status</th>
+                            <th>Type</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="order in vm.orders"  ng-if="vm.filter=='cancelled'" >
+                            <td>#{{ order.order_id }}</td>
+                            <td>{{ order.shipping.fullname }}</td>
+                            <td>{{ order.total | currency }}</td>
+                            <td>{{ order.items.length }}</td>
+                            <td>{{ order.status | uppercase }}</td>
+                            <td>{{ vm.orderType(order) }}</td>
+                            <td>
+                                <a ng-href="#/orders/view/{{ order.order_id }}" class="btn btn-xs btn-block btn-primary" ><i class="fa fa-eye"></i> View Order</a>
+                                <a ng-href="#/pos/receipt-maker/{{ order.order_id }}" class="btn btn-xs btn-block btn-default" ><i class="fa fa-file-o"></i> Print Receipt</a>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </tab>    
+            <!-- End cancelled -->
+            <!-- Archived orders -->
+            <tab select="vm.setFilter('archived')">
+                <tab-heading><i class="fa fa-archive"></i>Archived ( {{ vm.orderInfo.archived }} )</tab-heading>
+                
+                <table class="table table-striped" >
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Amount</th>
+                            <th>Items</th>
+                            <th>Status</th>
+                            <th>Type</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="order in vm.orders" ng-if="vm.filter=='archived'" >
+                            <td>#{{ order.order_id }}</td>
+                            <td>{{ order.shipping.fullname }}</td>
+                            <td>{{ order.total | currency }}</td>
+                            <td>{{ order.items.length }}</td>
+                            <td>{{ order.status | uppercase }}</td>
+                            <td>{{ vm.orderType(order) }}</td>
+                            <td>
+                                <a ng-href="#/orders/view/{{ order.order_id }}" class="btn btn-xs btn-block btn-primary" ><i class="fa fa-eye"></i> View Order</a>
+                                <a ng-href="#/pos/receipt-maker/{{ order.order_id }}" class="btn btn-xs btn-block btn-default" ><i class="fa fa-file-o"></i> Print Receipt</a>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>These are orders that have been paid for and/or delivered</p>
+            </tab>
+            <!-- End archived -->
+
+        </tabset>
+        <button class="btn btn-default btn-lg pull-right " ng-click="vm.loadMore()" ng-disabled="!vm.canLoadMore()"><i class="fa fa-undo"></i> Load more orders</button>
+        </div>
+    </div>
+	<div class="col-md-2 well" >
+        <label>Summary</label>
+        <ul class="list-unstyled" >
+            <li>Pending <span class="pull-right">( {{ vm.orderInfo.pending }})</span></li>
+            <li>Paid <span class="pull-right">( {{ vm.orderInfo.paid}})</span></li>
+            <li>Collected <span class="pull-right">({{ vm.orderInfo.delivered}})</span></li>
+            <li>Cancelled <span class="pull-right">({{ vm.orderInfo.cancelled }})</span></li>
+            <li>Archived <span class="pull-right">({{ vm.orderInfo.archived }})</span></li>
+        </ul>
+		<label>Actions</label>
+		<a ng-click="vm.verifyOrder()" class="btn btn-default btn-block" popover="Enter a verification code printed on a receipt generated by OneShop to verify if its genuine." popover-trigger="mouseenter" ><span class="fa fa-lock"></span> Verify Order</a>
+        <br/>
+        <a ng-click="vm.collectOrder()" class="btn btn-block btn-default" popover="Enter an order collection code and get taken to the order." popover-trigger="mouseenter"><span class="fa fa-ticket"></span> Collect Order</a>
+        <br/>
+        <label>Filter</label>
+        <br/>
+        <label>Items per page</label>
+        <select class="form-control" ng-model="vm.perPage" >
+            <option value="1" >1 - For slow bandwidth</option>
+            <option value="5" >5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50 - May take long to load</option>
+            <option value="100">100 - Not recommended !</option>
+        </select>
+        <label>Ordering</label>
+        <select class="form-control" ng-model="vm.orderBy">
+            <option value="DESC" >Show newest first</option>
+            <option value="ASC">Show oldest first</option>
+        </select>
+        <br/>
+        <button class="btn btn-block btn-default" ng-click="vm.doLoad()"><i class="fa fa-undo"></i> Reload</button>
+	</div>
+</div>
+<script type="text/ng-template" id="verifyOrderCode.html">
+    <div class="modal-header" >
+    <i class="fa fa-lock"></i> Verify Order Code<span class="close" ng-click="vm.cancel()">&times;</span>
+    </div>
+    <div class="modal-body" ng-hide="vm.isProcessing" >
+        <legend>Enter Verification Code</legend>
+        <p>Each order enerated by OneShop comes with a 32 character long verification code, unique to the code and can be used to verify the authenticity of a printed receipt.</p>
+        <br/>
+        <div class="input-group" >
+            <input type="text" class="form-control" placeholder="12345678901234567890123456789012" ng-model="vm.v_code" />
+            <div class="input-group-addon" >
+                <i class="fa fa-warning" ng-if="vm.v_code.length != 32"></i>{{ 32 - vm.v_code.length }}
+            </div>
+        </div>
+
+        <button ng-click="vm.verify()" ng-disabled="vm.v_code.length != 32 " class="btn btn-default pull-right" ><i class="fa fa-lock"></i> Verify Order</button>
+        <br/><br/>
+    </div>
+    <div class="modal-body" ng-show="vm.isProcessing" >
+        <legend>Please wait...</legend>
+        <p>Verify order....</p>
+    </div>
+    <div class="modal-body" ng-if="vm.isBackFromServer" >
+        <legend>The order {{ (vm.orderExists ? 'exists ' : 'does not exist') }}</legend>
+        <br/>
+        <button ng-click="vm.viewOrder()" ng-if="vm.orderExists" class="btn btn-block btn-lg btn-success" ><i class="fa fa-check"></i> Take me to the order</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="collectOrderCode.html">
+    <div class="modal-header" >
+    <i class="fa fa-user"></i> Order collection code <span class="close" ng-click="vm.cancel()">&times;</span>
+    </div>
+    <div class="modal-body" ng-hide="vm.isProcessing" >
+        <legend>Enter Collection Code</legend>
+        <p>Enter the 6-32 character collection code to get the order.</p>
+        <br/>
+        <div class="input-group" >
+            <input type="text" class="form-control" placeholder="ABCDEF" ng-model="vm.c_code" />
+            <div class="input-group-addon" >
+                <i class="fa fa-warning" ng-if="vm.c_code.length < 6"></i>{{ vm.c_code.length }}
+            </div>
+        </div>
+
+        <button ng-click="vm.verify()" ng-disabled="vm.c_code.length < 6 " class="btn btn-default pull-right" ><i class="fa fa-lock"></i> Verify Order</button>
+        <br/><br/>
+    </div>
+    <div class="modal-body" ng-show="vm.isProcessing" >
+        <legend>Please wait...</legend>
+        <p>Verify order....</p>
+    </div>
+    <div class="modal-body" ng-if="vm.isBackFromServer" >
+        <legend>The order {{ (vm.orderExists ? 'exists ' : 'does not exist') }}</legend>
+        <br/>
+        <button ng-click="vm.viewOrder()" ng-if="vm.orderExists" class="btn btn-block btn-lg btn-success" ><i class="fa fa-check"></i> Take me to the order</button>
+    </div>
+</script>

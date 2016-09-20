@@ -1,0 +1,12 @@
+{
+    "SEO": {
+        "AlexaRank": "Alexa ランク",
+        "Bing_IndexedPages": "Bing インデックスページ",
+        "Dmoz": "DMOZ エントリー",
+        "DomainAge": "ドメインエイジ",
+        "Google_IndexedPages": "Google インデックスページ",
+        "Rank": "ランク",
+        "SeoRankings": "SEO ランキング",
+        "SEORankingsFor": "%s の SEO ランキング"
+    }
+}

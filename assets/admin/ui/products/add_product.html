@@ -1,0 +1,191 @@
+<div class="row">
+  <div class="col-lg-12">
+    
+    <ol class="breadcrumb">
+      <li><i class="fa fa-home"></i><a ng-href="#/products/browse">Products</a></li>
+      <li ng-hide="vm.editMode"><i class="fa fa-plus"></i>Add New Product</li>
+      <li ng-show="vm.editMode"><i class="fa fa-cube"></i><a ng-href="#/product/view/{{ vm.product.product_id }}" >{{ vm.product.name }}</a></li>
+      <li ng-show="vm.editMode"><i class="fa fa-pencil"></i>Edit</li>                
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-10" >
+    
+    <div class="panel panel-default"  >
+      <div class="panel-body" >
+        <!-- Failed to add product -->
+        <div class="aler alert-warning" ng-if="vm.addProductFailed" >
+          <i class="fa fa-2x fa-warning" ></i> <h4 class="text-center">Failed to add Product !</h4>
+          {{ vm.addProductFailMsg }}
+        </div>
+        <!-- Product is also ordered elsewhere -->
+        <div class="aler alert-warning" ng-if="vm.isOrdered" >
+          <h4 class="text-center">Warning !</h4>
+          This product is currently ordered in {{ vm.isOrdered }} seperate orders. Editting this product now will affect all other orders and resend emails to all those with pending orders notifying them of the changes.<br/>
+          If you wish to maintain the old price for the pending orders, we suggect you clear your stock.
+        </div>
+        <div ng-hide="vm.isProcessing" class="row" >
+          <div class="col-md-4">
+            <div class="alert alert-danger" ng-hide="vm.product.images.length" >
+            You need to select or upload at least one image !
+            </div>
+            <carousel interval="3000" >
+              <slide ng-repeat="image in vm.product.images" >
+                <img ng-src="{{vm.image_url( image );}}" class="img-responsive" style="margin:auto; min-height: 160px; height: 200px; ">
+                <div class="carousel-caption">
+                  <span class="btn btn-xs btn-danger" ng-click="vm.removeImage($index)" title="Remove this image" >&times; Remove Image</span>
+                
+                </div>
+              </slide>
+            </carousel>
+            <button class="btn btn-default btn-block" ng-click="vm.selectImage()"><i class="fa fa-photo"></i> Add Image</button>
+            <hr/>
+            
+          </div>
+          <div class="col-md-8" >
+
+            <label>Product name</label>
+              <input type="text" placeholder="Product name" ng-model="vm.product.name" required  class="form-control" />
+            <div class="row" >
+              <div class="col-sm-12" >
+                <label>Brand</label>
+                  <input type="text" required ng-model="vm.product.brand" placeholder="Product brand. e.g Samsung" class="form-control" />
+              </div>
+              <div class="col-sm-6" >
+                <label>Price</label>
+                  <div class="input-group" >
+                    <span class="input-group-addon" ><i class="fa fa-dollar"></i></span>
+                    <input type="text" required ng-model="vm.product.price" class="form-control" />
+                  </div>
+              </div>
+              <div class="col-sm-6" >
+                <label>Type</label>
+                  <select style="margin-top: 5px;" class="form-control" ng-model="vm.product.type" required >
+                      <option value="physical" selected>Physical Product</option> 
+                      <option value="virtual">Virtual Product or Service</option>   
+                  </select>
+                  <br/>
+                  <button class="btn btn-block btn-info" ng-click="vm.selectFile()" ng-if="vm.product.type == 'virtual' " popover="This is the file you want to sell to your customers, for example if you are selling software select the zipped file containing the software. You can upload a new file. If you plan on offering a service you can just select a brochure file" popover-trigger="mouseenter" ><i class="fa fa-file-o"></i> <span ng-show="vm.product.file">{{ vm.product.file.filename }} <br/> {{ vm.product.file.bytes/(1024) }} Kb</span><span ng-hide="vm.product.file">Select Product File</span></button>
+                  
+              </div>
+            </div>
+            <div class="row" >
+              <div class="col-sm-6" >
+                <label>Tags</label>
+                  <tags-input ng-model="vm.product.tags"></tags-input>      
+              </div>
+              <div class="col-sm-6" >    
+                <label>Weight</label>
+                  <div class="input-group" >
+                    
+                    <input type="text" required ng-model="vm.product.weight_kg" ng-readonly="vm.product.type == 'virtual'" class="form-control" />
+                    <span class="input-group-addon" >Kg</span>
+                  </div>  
+              </div>
+              
+            </div>
+                
+            <label>Description</label>
+              <textarea ng-wig='vm.product.description' ></textarea>
+            <div class="row" >
+              <div class="col-sm-6" >
+                <label>Category</label>
+                <select class="form-control" ng-model="vm.product.category_id"   >
+                  <option ng-repeat="cat in vm.categories" value="{{ cat.category_id }}">{{ cat.name }}</option>
+                </select>
+              </div>
+              <div class="col-sm-6" >
+                <label>Is Featured Product?</label>
+                <select class="form-control" ng-model="vm.product.is_featured">
+                  <option value="1">Yes</option>
+                  <option value="0" selected>No</option>
+                </select>
+              </div>
+            </div> 
+            <br/> 
+            <div ng-if="!vm.editMode" >
+            <label>Stock </label>
+              <div class="row" >
+                <div class="col-md-4" >
+                  <label>Min per order</label>
+                    <input type="text" ng-model="vm.product.min_orders" class="form-control"  placeholder="1" pattern="[0-9]+" required />  
+                </div>
+                <div class="col-md-4" >
+                  <label>Max per order</label>
+                    <input type="text" required ng-model="vm.product.max_orders" class="form-control"  placeholder="5" pattern="[0-9]+" />
+                </div>
+                <div class="col-md-4" >
+                  <label>In Stock</label>
+                    <input type="text" ng-model="vm.product.stock_left" class="form-control" value="5" placeholder="5"  pattern="[0-9]+"  />
+                </div>
+              </div>
+             </div> 
+            <br/>  
+            <label>Attributes</label>
+            <table class="table table-striped" >
+              <thead>
+                <th>
+                  <tr>
+                    <td>Attribute</td>
+                    <td>Customize</td>
+                    <td>Options</td>
+                  </tr>
+                </th>
+              </thead>
+              <tbody>
+                <tr ng-repeat=" attribute in vm.product.attributes ">
+                  <td>
+                    <input type="text" placeholder="Attribute name e.g Weight, Size, Color" class="form-control" ng-model="attribute.attribute_name" required />
+                    <button ng-click="vm.removeAttribute($index)" class="btn btn-xs btn-block btn-danger" ng-if="vm.attributes.length > 1"><i class="fa fa-remove"></i> Remove</button>
+                  </td>
+                  <td>
+                    <select class="form-control" ng-model="attribute.is_customize" required >
+                      <option  value="1" >Yes</option>
+                      <option selected value="0">No</option>
+                    </select>
+                  </td>  
+                  <td>
+                    <div class="input-group" >
+                      <input type="text" placeholder="Default value" required class="form-control" ng-model="attribute.attribute_value" />
+                    </div>
+                    <div ng-if="attribute.is_customize" class="input-group" ng-repeat="option in attribute.options" >
+                      <input type="text" placeholder="Another Option" class="form-control" required ng-model="option.value" />
+                      <span class="input-group-addon" ><a ng-click="vm.removeAttributeOption( $parent.$parent.$index , $index)" ><i class="fa fa-remove"></i></a></span>
+                    </div>
+                      
+                    <button ng-if="attribute.is_customize" ng-click="vm.addOption($parent.$index)" class="btn btn-default btn-block"><i class="fa fa-check"></i> Add Option</button>
+                  </td>
+                  <td >
+                    <a ng-click="vm.removeAttribute($index)" title="Remove this attribute"><i class="fa fa-remove" style="color: red;"></i></a>
+                  </td>  
+                </tr>
+                <tr>
+                  <td><button class="btn btn-block btn-default" ng-click="vm.addAttribute()"><i class="fa fa-plus"></i> Add Attribute</button>
+                </tr>      
+              </tbody>
+            </table>
+            <button class="btn btn-lg pull-right btn-success" ng-if="! vm.editMode" ng-click="vm.addProduct()" ng-disabled="!vm.isReady()">Add Product ( {{ vm.product.name }} )</button>
+            <button class="btn btn-lg pull-right btn-success" ng-if="vm.editMode && vm.isReady()" ng-click="vm.updateProduct()" ng-disabled="!vm.isReady()"><i class="fa fa-save"></i> Save changes</button>
+            </div>
+          </div>  
+        </div>
+        <div ng-if="vm.isProcessing" >
+          <h2 class="text-center" >{{ (vm.editMode ? 'Editting' : 'Creating') }} Product {{ vm.product.name }} - {{ vm.product.price | currency }} </h2>
+          <progressbar class="progress-striped active"  max="100" value="100" type="success" animated="true" ><h2>{{ (vm.editMode ? 'Editting' : 'Creating') }} Product</h2></progressbar>
+        </div>
+        
+    </div>
+
+  </div>
+
+  <div class="col-md-2 well" >
+    <label>Actions</label>
+    <br/>
+    <button class="btn btn-block btn-default"><i class="fa fa-star"></i> Back to wizard</button>
+    <button class="btn btn-block btn-info"><i class="fa fa-info-circle"></i> Help?</button>
+    <br/>
+    <button class="btn btn-block btn-default"><i class="fa fa-upload"></i> Upload Image</button>
+
+  </div>
+</div>

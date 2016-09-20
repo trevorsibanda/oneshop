@@ -1,0 +1,66 @@
+
+AddType application/vnd.ms-fontobject .eot
+AddType font/ttf .ttf
+AddType font/otf .otf
+AddType font/woff .woff
+
+ModPageSpeed on
+ModPagespeedUseExperimentalJsMinifier on
+ModPagespeedEnableFilters rewrite_javascript
+ModPagespeedEnableFilters combine_javascript
+#ModPagespeedEnableFilters combine_css
+#ModPagespeedEnableFilters rewrite_css
+ModPagespeedEnableFilters collapse_whitespace
+
+<IfModule mod_rewrite.c>
+
+RewriteEngine On
+RewriteBase /
+
+
+<FilesMatch "\.(ttf|otf|eot|woff)">
+        <IfModule mod_headers.c>
+                Header set Access-Control-Allow-Origin "*"
+        </IfModule>
+</FilesMatch>
+
+
+#Set custom smaller 404 not found pages
+ErrorDocument	404	/errors/404.php
+ErrorDocument	403	/errors/403.php
+
+
+#Disable directory traversal
+Options All -Indexes
+
+
+
+# Force cache of files, reduce server load
+## EXPIRES CACHING ##
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType  image/jpg "access 1 year"
+ExpiresByType  font/ttf "access 1 year"
+ExpiresByType  font/woff "access 1 year"
+ExpiresByType  font/otf  "access 1 year"
+ExpiresByType  font/eot  "access 1 year"
+ExpiresByType image/jpeg "access 1 year"
+ExpiresByType image/gif "access 1 year"
+ExpiresByType image/png "access 1 year"
+ExpiresByType text/css "access 1 month"
+ExpiresByType application/pdf "access 7 day" 
+ExpiresByType text/x-javascript "access 1 day" 
+ExpiresByType application/x-shockwave-flash "access 1 month"
+ExpiresByType image/x-icon "access 1 year"
+ExpiresDefault "access 2 days"
+</IfModule>
+## EXPIRES CACHING ##
+
+#Enable gzip by default to reduce page load time
+AddOutputFilterByType DEFLATE text/html text/plain text/xml application/xml application/xhtml+xml text/javascript text/css application/x-javascript
+BrowserMatch ^Mozilla/4 gzip-only-text/html
+BrowserMatch ^Mozilla/4.0[678] no-gzip
+BrowserMatch bMSIE !no-gzip !gzip-only-text/html
+
+
+</IfModule>

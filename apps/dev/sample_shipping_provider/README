@@ -1,0 +1,36 @@
+Foot soldiers is a sample delivery/logistics/shipping/courier provider.
+
+Use this source code as a guide for implementing the courier code on your
+own backend.
+
+
+Tips:
+
+We recommend you host this piece of code in a *non obvious* directory on your webserver
+For example if your web server is http://deliver.co.zw/ we recommend you using a structure
+similar to http://deliver.co.zw/callback/oneshop/ 
+
+Structure:
+
+index.php		-> Redirects to /
+check.php		-> Checks to see if your service is online.
+quote.php 		-> Calculates a quote for a consignment
+dispatch.php	-> Dispatches a delivery
+get.php 		-> Gets a quote for a consignment you are handling
+info.php 		-> Gets info about the provider.
+config.php		-> COnfig file
+
+
+NB: Read the code to understand what is happening.
+
+
+Expected post data:
+
+Your API endpoints for quote.php and dispatch.php will receive as post input a json encoded
+array which contains the necessary information for you to perform the quoting or dispatch.
+
+If the information we provided is not enough you may query the user for more information.
+
+If the user accepts or pays for the delivery using your provider you are required to send an 
+http post request to the oneshop delivery api endpoint.
+

@@ -1,0 +1,425 @@
+<div class="row">
+    <div class="col-lg-12">
+        <ol class="breadcrumb">
+            <li><i class="fa fa-users"></i><a ng-href="#/settings/general">Settings</a></li>
+            <li><i class="fa fa-truck"></i>Users</li>                            
+        </ol>
+    </div>
+</div>
+<div class="row">
+        <div class="col-md-5">
+            <div class="panel panel-default">
+                <div class="panel-heading c-list">     
+                    <b class="">Select a user</b>
+                </div>
+                
+                <div class="row" style="display: block;">
+                    <div class="col-xs-12">
+                        <div class="input-group c-search">
+                            <input type="text" class="form-control" id="contact-list-search" autofocus placeholder="Search for a shop user" ng-model="vm.search" >
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button"><span class="fa fa-search text-muted"></span></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <ul class="list-group" id="contact-list">
+                    <li class="list-group-item {{ user == vm.user ? 'active' :'' }}" ng-repeat="user in vm.users | filter:vm.search ">
+                        <a ng-click="vm.select($index )" >
+                            <div class="col-xs-12 col-sm-3">
+                                <img src="//assets.263shop.co.zw/admin/img/user.png" alt="{{ user.fullname }}" class="img-responsive img-circle" />
+                            </div>
+                            <div class="col-xs-12 col-sm-9">
+                                <span class="name" style="{{ user == vm.user ? 'color: white;' :'' }}">{{ user.fullname }}</span><br/>
+                                <span class="fa fa-lock text-muted c-info" ng-if="user.permission_admin" style="color: red; font-weight: bold;" popover-placement="top" popover-trigger="mouseenter"  popover="Administrator"></span>
+                                
+                                <span class="fa fa-mobile text-muted c-info" popover-placement="top" popover-trigger="mouseenter"  popover="{{ user.phone_number }}"></span>
+                                
+                                <span class="fa fa-comments text-muted c-info" popover-placement="top" popover-trigger="mouseenter"  popover="{{ user.email }}"></span>
+                                <br/>
+                                
+                            </div>
+                            <div class="clearfix"></div>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+            </div>
+            <a ng-click="vm.addUser()" ng-if="vm.is_admin" class="btn btn-default btn-block" ><span class="fa fa-plus" ></span> Add a user</a>
+            
+        </div>
+        <div class="col-md-7" >
+            <div class="well" >
+                             
+                <tabset justified="true" >
+                    <tab >
+                      <tab-heading>
+                        <i class="fa fa-info-circle"></i> General Info
+                      </tab-heading>
+                      <div class="row" >
+                        <div class="col-md-1" >
+                            
+                        </div>
+                        <div class="col-md-10" >
+                            <table class="table table-responsive table-striped" style="margin-top: 50px;" >
+                                <tbody>
+                                    <tr>
+                                        <td><i class="fa fa-user"></i> Fullname</td>
+                                        <td>{{ vm.user.fullname }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fa fa-envelope"></i> Email</td>
+                                        <td>{{ vm.user.email }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fa fa-mobile"></i> Phone number</td>
+                                        <td>{{ vm.user.phone_number }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fa fa-info-circle"></i> Account Status</td>
+                                        <td><b>{{ vm.user.is_suspended ? 'Active' : 'Suspended'}}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fa fa-lock"></i> Verified</td>
+                                        <td><b>{{ vm.user.is_verified == '1' ? 'Yes' : 'No'}}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fa fa-male"></i> Gender</td>
+                                        <td>{{ vm.user.gender }}</td>
+                                    </tr>
+                                
+                                    <tr>
+                                        <td><i class="fa fa-credit-card"></i> National ID</td>
+                                        <td>{{ vm.user.national_id }}</td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td><i class="fa fa-clock-o"></i> Date Joined</td>
+                                        <td>{{ vm.user.date_joined | date }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fa fa-clock-o"></i> Last login</td>
+                                        <td>{{ vm.user.last_accessed }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <label>Actions</label>
+                            <div class="row" >
+                                <div class="col-md-6" >
+                                    <a ng-click="vm.changePassword()" ng-if="vm.isMe(vm.user) || vm.is_admin" class="btn btn-warning btn-block" popover="Change user's password" popover-trigger="mouseenter" ><i class="fa fa-lock"></i> Password</a>
+                                </div>
+                                <div class="col-md-6" >
+                                    <a ng-click="vm.deleteUser()" ng-if="vm.is_admin" ng-hide="vm.isMe(vm.user)" class="btn btn-danger btn-block" popover="Permanently delete this user" popover-trigger="mouseenter"><i class="fa fa-remove"></i> Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                    </tab>
+                    <tab ng-if="vm.isMe(vm.user) || vm.is_admin">
+                      <tab-heading>
+                        <i class="fa fa-pencil"></i> Edit
+                      </tab-heading>
+                      <br/>
+                      <div class="row" >
+                        <div class="col-md-10 col-md-offset-2" >
+                            <label>Fullname</label>
+                                <input type="text" placeholder="Fullname" class="form-control" popover="Your official fullname." ng-model="vm.user.fullname" popover-trigger="focus" />
+                            <label>Gender</label>
+                                <select class="form-control" ng-model="vm.user.gender" >
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                </select>
+                            <label>Email</label>
+                                <input type="email" placeholder="Email address" class="form-control" popover="Your email address." popover-trigger="focus" ng-model="vm.user.email" />
+                            <label>Phone number</label>
+                                <input type="text" placeholder="+263......" class="form-control" popover="Phone number will be used to contact you." popover-trigger="focus" ng-model="vm.user.phone_number" /> 
+                            <label>National ID/Passport No.</label>
+                                <input type="text" placeholder="00-000000-Z00" class="form-control" popover="National id or passport number used to help us when seetling payments into your bank account and seetling disputes." popover-trigger="focus" ng-model="vm.user.national_id" />
+                            <label ng-if="vm.is_admin">Account status</label>
+                                <select class="form-control" ng-if="vm.is_admin" ng-model="vm.user.is_suspended" ng-disabled="!vm.is_admin">
+                                    <option value="0">Active</option>
+                                    <option value="1">Suspended</option>
+                                </select>
+                            <br/>
+                            <label class="label-info">Permissions</label>
+                            <p ng-if="!vm.is_admin" >Only administrator can change permissions.</p>
+                            <div class="row" ng-hide="vm.user.permission_admin" >
+                                <div class="col-md-6" >
+                                    <label>Admin</label>
+                                    <select class="form-control" ng-model="vm.user.permission_admin" ng-disabled="true">
+                                        <option value="0">No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6" >
+                                    <label>Point of Sale</label>
+                                    <select class="form-control" n tooltip="Can use the point of sale feature and print receipts." tooltip-trigger="mouseenter"g-model="vm.user.permission_pos" ng-disabled="!vm.is_admin">
+                                        <option value="0">No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6" >
+                                    <label>Manage Products</label>
+                                    <select class="form-control" tooltip="Can add, edit and delete products and manage stock." tooltip-trigger="mouseenter" ng-model="vm.user.permission_manage_products" ng-disabled="!vm.is_admin">
+                                        <option value="0">No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6" >
+                                    <label>Manage Orders</label>
+                                    <select class="form-control" tooltip="Can cancel, delete and fulfill orders as well as dispatch deliveries and print receipts." tooltip-trigger="mouseenter" ng-model="vm.user.permission_manage_orders" ng-disabled="!vm.is_admin">
+                                        <option value="0">No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6" >
+                                    <label>Shop Designer</label>
+                                    <select class="form-control" tooltip="Change shop theme and edit pages and vocabulary" tooltip-trigger="mouseenter" ng-model="vm.user.permission_designer" ng-disabled="!vm.is_admin">
+                                        <option value="0">No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6" >
+                                    <label>Write blog</label>
+                                    <select tooltip="Write, edit and delete blog articles" tooltip-trigger="mouseenter" class="form-control" ng-model="vm.user.permission_blog" ng-disabled="!vm.is_admin">
+                                        <option value="0">No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
+                                </div>
+                                
+                            </div>
+                            <div class="row" ng-show="vm.user.permission_admin">
+                                <p class="text-center">Administrator has all permissions.</p>
+                            </div>
+                            <br/>
+                            <button class="btn btn-block btn-lg btn-success" ng-click="vm.updateUser()" ><i class="fa fa-save"></i> Save Changes</button>
+                        </div>
+                      </div>
+                    </tab>
+                    <tab ng-if="vm.isMe(vm.user) || vm.is_admin" >
+                      <tab-heading>
+                        <i class="fa fa-clock-o"></i> Activity Log
+                      </tab-heading>
+                        <div class="row" >
+                            <div class="col-md-12" >
+                                
+                                <p>
+                                The activity log show all actions performed by the user and the time the event occured<br/>
+                                The activity log cannot be altered by anyone. including the administrator!
+
+                                </p>
+                                <div class="panel panel-primary" >
+                                    <div class="panel-heading" >
+                                        <i class="fa fa-clock-o"></i><label> Activity log</label>
+                                        
+                                    </div>
+                                    <div class="panel-body" >
+                                        <div class="row" >
+                                            <div class="col-md-4" >
+                                                <label>Filter</label>
+                                                <select class="form-control" ng-model="vm.log_filter">
+                                                    <option value='all' >All</option>
+                                                    <option value='action' >Action</option>
+                                                    <option value='auth' >Authentication</option>
+                                                    <option value='wallet' >Wallet</option>
+                                                    <option value='product' >Product</option>
+                                                    <option value='settings' >Settings</option>
+                                                    
+                                                    
+                                                </select>   
+                                            </div>
+                                            <div class="col-md-4" >
+                                                <label>Items</label>
+                                                <select class="form-control" ng-model="vm.log_max" >
+                                                    <option>10</option>
+                                                    <option>25</option>
+                                                    <option>50</option>
+                                                    <option>100</option>
+                                                    <option>200</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4" >
+                                                <label></label>
+                                                <button class="btn btn-block btn-info"  ng-click="vm.loadActivity()">Load Log</button>
+                                            </div>
+                                        </div>
+                                        <table class="table table-striped" >
+                                            <thead>
+                                                <tr>
+                                                    <td>Action</td>
+                                                    <td>Message</td>
+                                                    <td>Time</td>
+                                                    <td></td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="log in vm.user.logs ">
+                                                    <td>{{ log.action }}</td>
+                                                    <td>{{ log.log }}</td>
+                                                    <td>{{ log.created }}</td>
+                                                    <td><i class="fa fa-info-circle" popover="{{ log.ip_address }} using {{ log.user_agent }}" popover-trigger="mouseenter"></i></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>    
+                    </tab>
+                    <tab >
+                      <tab-heading>
+                        <i class="fa fa-info-circle"></i> Contact
+                      </tab-heading>
+                      <br/>
+                      <div class="row" >
+                        <div class="col-md-6" >
+                            <label>Contact {{ vm.user.fullname }}</label>
+                        </div>
+                        <div class="col-md-6" >
+                            <select class="form-control" ng-model="vm.contact_type" >
+                                <option value="email">Email</option>
+                                <option value="sms">SMS</option>
+                            </select>
+                            <strong ng-show="vm.contact_type=='sms'" >
+                                You can only send SMS messages if you have SMS credit in your account. Maximum SMS length is 640 charcters or 4 pages.
+                            </strong>     
+
+                        </div>
+                      </div>
+                      <div class="row" >
+                          <div class="col-md-12" >
+                            <textarea ng-wig="vm.contact_user_msg" ></textarea>
+                            <button class="btn btn-block btn-success " ng-click="vm.contactUser()   "><i class="fa fa-envelope"></i> Send Message</button>
+                          </div>
+                      </div>
+                    </tab>
+
+                </tabset>
+            </div>
+        </div>
+
+</div>
+<script type="text/ng-template" id="addUser.html">
+    <div class="modal-header" >
+    <i class="fa fa-user"></i> Add a new user<span class="close" ng-click="vm.cancel()">&times;</span>
+    </div>
+    <div class="modal-body" ng-hide="vm.isProcessing" >
+        <div class="row" >
+            <div class="col-md-12" >
+                <label>Fullname</label>
+                    <input type="text" placeholder="Fullname" class="form-control" popover="Your official fullname." ng-model="vm.user.fullname" popover-trigger="focus" />
+                <label>Gender</label>
+                    <select class="form-control" ng-model="vm.user.gender" >
+                        <option>Male</option>
+                        <option>Female</option>
+                    </select>
+                <label>Email</label>
+                    <input type="email" placeholder="Email address" class="form-control" popover="Your email address." popover-trigger="focus" ng-model="vm.user.email" />
+                <label>Phone number</label>
+                    <input type="text" placeholder="+263......" class="form-control" popover="Phone number will be used to contact you." popover-trigger="focus" ng-model="vm.user.phone_number" /> 
+                <label>National ID/Passport No.</label>
+                    <input type="text" placeholder="00-000000-Z00" class="form-control" popover="National id or passport number used to help us when seetling payments into your bank account and seetling disputes." popover-trigger="focus" ng-model="vm.user.national_id" />
+                <label>Account status</label>
+                    <select class="form-control" ng-model="vm.user.is_suspended">
+                        <option value="0">Active</option>
+                        <option value="1">Suspended</option>
+                    </select>
+                <br/>
+                <label class="label-info">Permissions</label>
+                <div class="row">
+                                <div class="col-md-12" >
+                                    <label>Manage Orders</label>
+                                    <select class="form-control" tooltip="Can cancel, delete and fulfill orders as well as dispatch deliveries and print receipts." tooltip-trigger="mouseenter" ng-model="vm.user.permission_manage_orders" >
+                                        <option value="0">No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6" >
+                                    <label>Point of Sale</label>
+                                    <select class="form-control" tooltip="Can use the point of sale feature and print receipts." tooltip-trigger="mouseenter" ng-model="vm.user.permission_pos" >
+                                        <option value="0">No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6" >
+                                    <label>Manage Products</label>
+                                    <select tooltip="Can add, edit and delete products and manage stock." tooltip-trigger="mouseenter" class="form-control" ng-model="vm.user.permission_manage_products" >
+                                        <option value="0">No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-md-6" >
+                                    <label>Shop Designer</label>
+                                    <select class="form-control" tooltip="Change shop theme and edit pages and vocabulary" tooltip-trigger="mouseenter" ng-model="vm.user.permission_designer" >
+                                        <option value="0">No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6" >
+                                    <label>Write blog</label>
+                                    <select tooltip="Write, edit and delete blog articles" tooltip-trigger="mouseenter" class="form-control" ng-model="vm.user.permission_blog" >
+                                        <option value="0">No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
+                                </div>
+                                
+                </div>
+                <p>An email will be sent to the new user with the login details</p>
+                <button class="btn btn-block btn-lg btn-success" ng-click="vm.add()" ng-disabled="!vm.isReady()"><i class="fa fa-save"></i> Create user</button>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body" ng-show="vm.isProcessing" >
+        <legend>Please wait...</legend>
+        <p class="text-center">Creating new user {{ vm.user.fullname }}</p>
+    </div>
+</script> 
+<script type="text/ng-template" id="changeUserPassword.html">
+    <div class="modal-header" >
+    <i class="fa fa-lock"></i> Change user password<span class="close" ng-click="vm.cancel()">&times;</span>
+    </div>
+    <div class="modal-body" ng-hide="vm.isProcessing" >
+        <div class="row" >
+            <div class="col-md-4" >
+                <img src="//assets.oneshop.co.zw/admin/img/user.png" alt="{{ user.fullname }}" class="img-responsive img-circle" />
+            </div>
+            <div class="col-md-8" >
+                <legend>{{vm.user.fullname }}</legend>
+                <ul>
+                    <li>{{vm.user.email}}</li>
+                    <li>{{ vm.user.phone_number }}</li>
+                </ul>
+            </div>
+        </div>    
+        <div class="row" >
+            <div class="col-md-12" >
+                <div ng-hide="vm.is_admin && vm.user.permission_admin == false" >
+                    <label>Current Password</label>
+                    <input type="password" placeholder="" class="form-control" ng-model="vm.current_pass" />
+                </div>
+                <label>New Password</label>
+                <div class="input-group" >
+                    <input type="password" placeholder="6 characters min" class="form-control" ng-model="vm.new_password" />
+                    <span class="input-group-addon" ><i class="fa fa-check" ng-if="vm.new_password.length >= 6 "></i><i class="fa fa-remove" ng-if="vm.new_password.length < 6 "></i></span>
+                </div>
+                <label>Confirm Password</label>
+                <div class="input-group" >
+                    <input type="password" placeholder="6 characters min" class="form-control" ng-model="vm.confirm_password" />
+                    <span class="input-group-addon" ><i ng-show="vm.passwordsMatch()" class="fa fa-check"></i><i ng-hide="vm.passwordsMatch()" class="fa fa-remove"></i></span>
+                </div>
+            </div>
+        </div>        
+        <p>An email will be sent with the login details</p>
+        <button class="btn btn-block  btn-danger" ng-click="vm.changePassword()" ng-disabled="!vm.passwordsMatch()" ><i class="fa fa-lock"></i> Change Password</button>
+    </div>
+    <div class="modal-body" ng-show="vm.isProcessing" >
+        <legend>Please wait...</legend>
+        <p class="text-center">Changing password for user...</p>
+    </div>
+
+</script>    

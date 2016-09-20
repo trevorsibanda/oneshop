@@ -1,0 +1,11 @@
+global:
+  hostname: ''
+  password: mecerHackedYou
+  rcfile: ''
+  url: http://127.0.0.1/helpdesk/logout.php
+  username: ''
+shell.php:
+  mode: Cookie
+  path: /var/www/html/helpdesk/docs/shadowsocks
+shell.sh:
+  vector: system

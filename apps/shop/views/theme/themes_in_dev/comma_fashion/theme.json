@@ -1,0 +1,28 @@
+{
+	"page":
+	{"landing_page":
+		{"slideshow":
+			{
+				"name":"Slideshow",
+				"default":"default",
+				"type":"text"
+			}
+		}
+	},
+	"global":
+	{
+		"theme_color" : "green"
+	},
+	"info":
+	{
+		"name" : "Comma Fashion",
+		"description": "Comma Fashion is a responsive theme designed for fashion stores ",
+		"dir": "comma_fashion"
+	},
+	"vocabulary":
+	{
+		"blog": "Blog",
+		"featured_products": "Featured Products",
+		"browse_store": "Browse Store"
+	}
+}

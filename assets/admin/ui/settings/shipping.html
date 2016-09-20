@@ -1,0 +1,212 @@
+<div class="row">
+	<div class="col-lg-12">
+		<ol class="breadcrumb">
+			<li><i class="fa fa-wrench"></i><a ng-href="#/settings/general">Settings</a></li>
+			<li><i class="fa fa-truck"></i>Orders and Shipping</li>						  	
+		</ol>
+	</div>
+</div>
+<div class="row" >
+	<div class="col-md-12" >
+		<div class="panel panel-default" >
+			<div class="panel-body" >
+				<img src="//assets.263shop.co.zw/admin/img/stock/shipping.png" class="img-responsive" />
+				<br/><br/><br/>
+				<!-- Order settings -->
+				<div class="col-md-6" >
+					<div class="panel panel-warning" >
+						<div class="panel-heading" >
+							<i class="fa fa-cubes"></i> Orders
+						</div>
+						<div class="panel-body" >
+							<label>Order expiration days</label>
+							<p>Specify the number of days before a pending order will be cancelled.</p>
+							<select class="form-control" ng-model="vm.order_settings.order_expire_days" >
+								<option value="14">14 days</option>
+								<option value="10">10 days</option>
+								<option value="7">7 days</option>
+								<option value="5">5 days</option>
+								<option value="3">3 days</option>
+								<option value="2">2 days</option>
+								<option value="1">1 day </option>
+								<option value="28">28 days</option>
+								
+							</select>
+							<br/>
+							
+							<label>SMS Order Notification</label>
+							<p>Do you want to receive an SMS everytime an order is placed ?<br/>
+							</p>
+							<select class="form-control" ng-model="vm.order_settings.sms_notify_on_order">
+								<option value="1">Yes</option>
+								<option value="0">No</option>
+							</select>
+							<br/>
+							<label>SMS Payment Notification</label>
+							<p>Do you want OneShop to send you an SMS whenever a payment is received ? We recommend you enable this functionality.<br/>
+							<b>NB: OneShop will always email you when an order is paid for.</b></p>
+							<select class="form-control" ng-model="vm.order_settings.sms_notify_on_pay">
+								<option value="1">Yes</option>
+								<option value="0">No</option>
+							</select>
+							<br/>
+							<label>Email order notification</label>
+							<p>Do you want OneShop to send you a notification email everytime a order is placed ?<br/></p>
+							<select class="form-control" ng-model="vm.order_settings.email_notify_on_order">
+								<option selected value="1">Yes</option>
+								<option value="0">No</option>
+							</select>
+							<br/>
+							
+							<label>Captcha on order</label>
+							<select tooltip="If you are getting too make false orders and want to make sure your orders are not coming from robots" tooltip-trigger="mouseenter" class="form-control" ng-model="vm.order_settings.use_captcha">
+								<option value="1">Yes</option>
+								<option value="0">No</option>
+							</select>
+							
+							<br/><br/>
+							<button class="btn btn-block btn-lg btn-success" ng-click="vm.saveOrderSettings()"><i class="fa fa-save"></i> Save settings</button>
+							
+						</div>
+					</div>
+				</div>
+				<!-- Shipping settings -->
+				<div class="col-md-6" >
+					<div class="panel panel-danger" >
+						<div class="panel-heading" >
+							<i class="fa fa-truck"></i> Shipping
+						</div>
+						<div class="panel-body" >
+							<div class="alert alert-danger" ng-show=" vm.shipping_settings.allow_collect_instore  == '0' &&  vm.shipping_settings.allow_cash_on_delivery == '0' &&   vm.shipping_settings.allow_deliveries == '0'">
+							<i class="fa fa-warning"></i>You must enable at least one shipping option. 
+							</div>
+							<label>Collect in store</label>
+							<select class="form-control" ng-model="vm.shipping_settings.allow_collect_instore">
+								<option value="1">Yes</option>
+								<option value="0">No</option>
+							</select>
+							<label>Deliveries</label>
+							<select class="form-control" ng-model="vm.shipping_settings.allow_deliveries">
+								<option value="1">Yes</option>
+								<option value="0">No</option>
+							</select>
+							<div ng-if="vm.shipping_settings.allow_deliveries  " >
+								<label>Delivery Charges Method</label>
+								<select class="form-control" ng-model="vm.shipping_settings.use_shipping_rules">
+									<option value="0">Simple Pricing (Recommended)</option>
+									<option value="1">Advanced - Rule Based Pricing</option>
+									
+								</select>
+								<div ng-if="vm.shipping_settings.use_shipping_rules" >
+									<label>Shipping Rate Rules</label>
+									<p>You can set different pricing rules for different shipments. For example you might want to charge $2,00 for deliveries within Harare and $4,00 for deliveries to Bulawayo or provide free delivery for orders under 5Kg...etc</p>
+									<button  ng-click="vm.editShippingRules()" class="btn btn-default btn-block"><i class="fa fa-dollar"></i> Manage Shipping rules ( {{ vm.shipping_settings.rules.length }} )</span></button>
+									
+
+									<label>My Handling fee</label> 
+									<p>This amount is added to the calculated shipping fee. We recommend you keep it at $0,00 and only  set it if absolutely necessary. Lowere costs = More customers.</p>
+									<div class="input-group" >
+										<div class="input-group-addon" >
+											<span class="fa fa-dollar" ></span>
+										</div>
+										<input type="text" ng-model="vm.shipping_settings.handling_fee" class="form-control" placeholder="Keep this as LOW AS POSSIBLE !!!" pattern="[0-9]+" />	
+									</div>
+								</div>
+								<div ng-hide="vm.shipping_settings.use_shipping_rules" >
+									<br/>
+									<label>Intra-City Delivery Cost</label>
+									<div class="input-group" >
+										<div class="input-group-addon" >
+											<span class="fa fa-dollar" ></span>
+										</div>
+										<input type="text" tooltip="How much are you charging for deliveries within the same city." tooltip-trigger="mouseenter" ng-model="vm.shipping_settings.intracity_fee" class="form-control" placeholder="0.00" pattern="[0-9]+" />	
+									</div>
+									
+									<label>Inter-City Delivery Cost</label>
+									<div class="input-group" >
+										<div class="input-group-addon" >
+											<span class="fa fa-dollar" ></span>
+										</div>
+										<input type="text" tooltip="How much are you charging for deliveries within the country, but to different cities and towns." tooltip-trigger="mouseenter" ng-model="vm.shipping_settings.intercity_fee" class="form-control" placeholder="0.00" pattern="[0-9]+" />	
+									</div>
+								</div>
+							</div>
+							<label>Cash on Delivery</label>
+							<select class="form-control" ng-model="vm.shipping_settings.allow_cash_on_delivery">
+								<option value="1">Yes</option>
+								<option value="0">No</option>
+							</select>
+							
+							<hr/>
+							
+							<button class="btn btn-block btn-lg btn-success" ng-click="vm.saveShippingSettings()"><i class="fa fa-save"></i> Save settings</button>
+							
+						</div>
+					</div>
+				</div>	
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Edit shipping rules -->
+<script type="text/ng-template" id="editShippingRules.html">
+	<div class="modal-header">
+        <h3 class="modal-title">Shipping Rules <a  class="close" ng-click="vm.dismiss()" >&times;</a></h3>
+    </div> 
+	<div class="modal-body" >
+		<p>Take control of how you charge customers for deliveries. Take care and make sure your rules do not clash
+		<br/>For example to provide free shipping for all orders above 20Kg you would select type "Weight Based" and enter "20.00" in Low and "99999.99" in High and "0.00" for price.<br/>
+		Read <a href="" target="_blank" >this article</a> for help with Shipping Rules </p>
+
+		<table class="table table-striped" >
+			<thead>
+				<th></th>
+				<th>Rule Type</th>
+				<th>Low</th>
+				<th>High</th>
+				<th>Price</th>
+				<th>Conditions</th>
+			</thead>
+			<tbody>
+				<tr ng-repeat="rule in vm.rules">
+					<td><a ng-click="vm.removeRule($index)" title="Remove this rule" style="color: red; font-weight: bold;"><i class="fa fa-remove"></i></a></td>
+					<td>
+						<select class="form-control" ng-model="rule.type" >
+							<option value="weight" >Weight Based</option>
+							<option value="price" >Price Based</option>
+						</select>
+					</td>
+					<td>
+						<div class="input-group" >
+							<span class="input-group-addon"  ng-if="rule.type == 'price'"  >$</span>
+							<input type="text" class="form-control" ng-model="rule.low" placeholder="0.00" />
+							<span class="input-group-addon" ng-if="rule.type == 'weight'">Kg</span>
+						</div>
+					</td>
+					<td>
+						<div class="input-group" >
+							<span class="input-group-addon"  ng-if="rule.type == 'price'"  >$</span>
+							<input type="text" class="form-control" ng-model="rule.high" placeholder="0.00" />
+							<span class="input-group-addon" ng-if="rule.type == 'weight'">Kg</span>
+						</div>
+					</td>
+					<td>
+						<div class="input-group" >
+							<span class="input-group-addon" >$</span>
+							<input type="text" class="form-control" ng-model="rule.price" placeholder="0.00" />
+							
+						</div>
+					</td>
+					<td>
+						<button class="btn btn-default btn-block" ng-click="vm.addCondition(rule)" >Conditions</button>
+					</td>			
+				</tr>
+			</tbody>
+		</table>
+		<button class="btn btn-default pull-right" ng-click="vm.addRule()" ><i class="fa fa-plus"></i> Add Rule</button>
+		<br/><br/><br/><br/>
+		<div class="modal-footer" >
+			<button class="btn btn-success pull-right" ng-click="vm.saveRules()" ><i class="fa fa-save"></i> Save Rules</button>
+			<br/>
+		</div>
+</script>

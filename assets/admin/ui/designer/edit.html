@@ -1,0 +1,107 @@
+<div class="row">
+	<div class="col-lg-12">
+		<ol class="breadcrumb">
+			<li><i class="fa fa-paint-brush"></i><a href="#/designer/theme">Designer</a></li>
+			<li><i class="fa fa-pencil"></i>Edit  pages</li>						  	
+		</ol>
+	</div>
+</div>
+<div class="row" >
+	<div class="col-md-10" >
+		<div class="panel panel-default" >
+			<p>Edit the layout and content shown in your pages. This allows you to select your own images,
+			add text, display a product... etc.</p>
+			<br/>
+			<div class="row" >
+				<div class="col-md-3" >
+					<label>Select Page</label>
+					<select class="form-control">
+						<option>Landing Page</option>
+						<option>Product Page</option>
+					</select>	
+				</div>
+				<div class="col-md-9">
+
+				</div>
+			</div>
+			<div class="clearfix" ></div>
+			<hr/>
+			<form class="form" ng-submit="" >
+				<table class="table table-striped">
+					<thead>
+						<th>
+							<tr>
+								<td>Info</td>
+								<td>Attribute</td>
+								<td>Type</td>
+								<td>Value</td>
+								<td>Action</td>
+							</tr>
+						</th>
+					</thead>
+					<tbody>
+						<tr>
+							<td><a ng-click="" ><i class="fa fa-info-circle"></i></a></td>
+							<td>Display Message</td>
+							<td>TEXT</td>
+							<td><textarea ng-wig ></textarea></td>
+							<td><a ng-click popover="Reset to default value" popover-trigger="mouseenter" ><i class="fa fa-eye" ></i></a></td>
+						</tr>
+						<tr>
+							<td><a ng-click="" ><i class="fa fa-info-circle"></i></a></td>
+							<td>Feeatured Product</td>
+							<td>PRODUCT</td>
+							<td><button class="btn btn-block btn-default"><i class="fa fa-gift"></i> Select Product</button></td>
+							<td><a ng-click popover="Reset to default value" popover-trigger="mouseenter" ><i class="fa fa-eye" ></i></a></td>
+						</tr>
+						<tr>
+							<td><a ng-click="" ><i class="fa fa-info-circle"></i></a></td>
+							<td>Featured Product Image</td>
+							<td>PRODUCT IMAGE</td>
+							<td><button class="btn btn-default btn-block"><i class="fa fa-photo"></i> Select product image</button></td>
+							<td><a ng-click popover="Reset to default value" popover-trigger="mouseenter" ><i class="fa fa-eye" ></i></a></td>
+						</tr>
+						<tr>
+							<td><a ng-click="" ><i class="fa fa-info-circle"></i></a></td>
+							<td>Banner Image</td>
+							<td>SHOP IMAGE</td>
+							<td><button class="btn btn-default btn-block"><i class="fa fa-photo"></i> Select product image</button></td>
+							<td><a ng-click popover="Reset to default value" popover-trigger="mouseenter" ><i class="fa fa-eye" ></i></a></td>
+						</tr>
+						<tr>
+							<td><a ng-click="" ><i class="fa fa-info-circle"></i></a></td>
+							<td>Call to Action</td>
+							<td>SHOP PAGE</td>
+							<td>
+								<select class="form-control" >
+									<option>Browse Products</option>
+									<option>About Us</option>
+								</select>
+							</td>
+							<td><a ng-click popover="Reset to default value" popover-trigger="mouseenter" ><i class="fa fa-eye" ></i></a></td>
+						</tr>
+						<tr>
+							<td><a ng-click="" ><i class="fa fa-info-circle"></i></a></td>
+							<td>Banner Image</td>
+							<td>BLOG PAGE</td>
+							<td>
+								<select class="form-control" >
+									<option>Browse Products</option>
+									<option>About Us</option>
+								</select>
+							</td>
+							<td><a ng-click popover="Reset to default value" popover-trigger="mouseenter" ><i class="fa fa-eye" ></i></a></td>
+						</tr>
+
+
+					</tbody>
+				</table>
+			</form>	
+		</div>
+	</div>
+	<div class="col-md-2 well" >
+		<span class="label label-default" >Actions</label>
+		<br/>
+		<button class="btn btn-block btn-default"><i class="fa fa-paint-brush"></i> Select theme</button>
+	</div>
+</div>

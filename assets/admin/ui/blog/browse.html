@@ -1,0 +1,75 @@
+<div class="row">
+    <div class="col-lg-12">
+        <ol class="breadcrumb">
+            <li><i class="fa fa-book"></i><a >Blog</a></li>
+            <li><i class="fa fa-list"></i>Browse</li>                            
+        </ol>
+    </div>
+</div>
+
+<div class="row" >
+    <div class="col-md-10" >
+        <div class="panel panel-default" >
+            <div class="panel-body" >
+                <p>Blog posts</p>
+                <div class="input-group" >
+                    <input type="text" class="form-control" ng-model="vm.post_search" placeholder="Search for a blog post" />
+                    <div class="input-group-addon" >
+                        <span class="fa fa-search"></span>
+                    </div>
+                </div>    
+                    <br/>
+                    <br/>
+                    <!-- Posts -->
+                <div ng-repeat="post in vm.posts | filter:vm.post_search " class="row well"   >
+                    <div class="col-md-4 col-sm-2 col-xs-4 "   >
+                        <img ng-src="{{ vm.image_url( post.image ) }}" class="img-responsive" style="width: 100%; height: 160px;">     
+                    </div>
+                    <div class="col-md-8 col-sm-10 col-xs-8 " >
+                        <legend>{{ post.title }}</span></legend>
+                        <article>{{ post.extract }}</article>
+                        <div class="row" >
+                            <div class="col-sm-4" >
+                                <label><i class="fa fa-facebook"></i> {{ post.shares }}  shares</label>
+                                <a target="_blank" class="btn btn-block btn-xs btn-info"><i class="fa fa-share"></i> Share</a>
+                            </div>
+                            <div class="col-sm-4" >
+                                <label ><i class="fa fa-eye"></i> {{post.views}} views</label>
+                                <a href="/blog/post/{{post.post_id}}" target="_blank" class="btn btn-default btn-xs btn-block"><i class="fa fa-external-link"></i> View Article</a>
+                            </div>
+                            <div class="col-sm-4" >
+                                <label>Action</label>
+                                <a ng-href="#/blog/edit/{{ post.post_id }}" class="btn btn-default btn-xs btn-block"><i class="fa fa-pencil"></i> Edit article</a>
+                                <a ng-click="vm.deleteArticle(post)" class="btn btn-danger btn-xs btn-block"><i class="fa fa-remove"></i> Delete</a>
+
+                            </div>
+                        </div>
+                        <span class="pull-right"><small>By {{ post.author }} at {{ post.date_published | date }}</small></span>
+                            
+                            
+                    </div>
+                </div>
+                    <!-- end posts -->
+                <div ng-show="vm.posts.length == 0" >
+                    <h1 class="text-center">You have not written anything ?</h1>
+                    <p class="text-center">Blogging is the best way to show your customers that they can trust you and you know what you're doing.<br/>
+                    If you sell tomatoes online, write about tomatoes and the tomatoe business so well that potential customers will just hand you the money! .
+                    <br/>
+                    <br/><h5>Start blogging now !</h5>
+                    <br/>
+                    <a ng-href="#/blog/write" class="btn btn-lg btn-danger" style="margin-left: 45%;"><i class="fa fa-pencil"></i> Write your first article</a>
+                    </p> 
+                </div>      
+                
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2 well" >
+        <label>Actions</label>
+        <br/>
+        <a href="/blog" target="_blank" class="btn btn-block btn-default"><i class="fa fa-external-link" ></i> Go to blog</a>
+        <button class="btn btn-block btn-default" popover="Clear the local cache and reload the posts." popover-trigger="mouseenter" ng-click="vm.reloadPosts()" ><i class="fa fa-refresh"></i> Reload posts</button>
+        <br/>
+        <a ng-href="#/blog/write" class="btn btn-block btn-default"><i class="fa fa-pencil" ></i> Write article</a>
+    </div>
+</div>

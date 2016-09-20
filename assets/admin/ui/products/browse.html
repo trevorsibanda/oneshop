@@ -1,0 +1,61 @@
+<div class="row">
+    <div class="col-lg-12">
+        <ol class="breadcrumb">
+            <li><i class="fa fa-cubes"></i><a ng-href="#/products/browse">Products</a></li>
+            <li><i class="fa fa-list"></i>Browse</li>                            
+        </ol>
+    </div>
+</div>
+<div class="row" >
+    <div class="col-md-10"   >
+        <div class="panel" >
+            <div class="panel-heading" >
+                <div class="row" >
+                    <div class="col-md-6" >
+                        <div class="input-group" >
+                            <input type="text" class="form-control" ng-model="vm.product_search" placeholder="Search by text" />
+                            <div class="input-group-addon"><a ng-href="" ><span class="fa fa-search"></span></a></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="pull-right" ><a class="btn " tooltip="Refresh the list of all products. " tooltip-trigger="mouseenter" ng-click="vm.reloadProducts()" ><i class="fa fa-refresh" ></i></a></span>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body" >
+                <div class="row" >
+
+                    <div class="col-md-3 col-sm-6 column productbox" style="height: 240px;" ng-repeat="product in vm.products | filter:vm.product_search " >
+                        <a ng-href="#/product/view/{{ product.product_id }}" >
+                            <img ng-src="{{ vm.image_url( product.images[0] ) }}" class="thumbnail" style="width: 100%; height: 160px;">
+                            <div class="producttitle">{{ product.name }}</div>
+                            <div class="productprice"><div class="pull-right"></div><div class="pricetext">{{ product.price | currency }}</div></div>
+                        </a>
+                    </div>
+                    <div class="row"   ng-hide="vm.products" >
+                        <div class="col-md-12" >
+                            <div class="text-center" >
+                                <h2>You have no products</h2>
+                                <br/>
+                                <p>Add products to start selling. <br/>
+                                    <a href="#/products/add" class="btn btn-default btn-lg " ><i class="fa fa-plus"></i> Add product</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                
+        </div>
+    </div>
+    <div class="col-md-2 well" >
+        <label>Actions</label>
+        <a ng-href="#/products/categories" class="btn btn-block btn-default" ><i class="fa fa-sitemap"></i> Categories</a>
+        <a ng-href="#/products/stock-manager" ng-if="vm.permissionEdit" class="btn btn-block btn-default" ><i class="fa fa-cubes"></i> Manage Stock</a>
+        <a ng-href="#/products/add" class="btn btn-block btn-default" ng-if="vm.permissionEdit"><i class="fa fa-plus"></i> Add product</a>
+        <br/>
+        <a ng-href="#/products/add" class="btn btn-block btn-info" ><i class="fa fa-question-circle"></i> Help ?</a>
+        
+
+    </div>
+</div>                

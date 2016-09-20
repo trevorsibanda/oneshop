@@ -1,0 +1,41 @@
+{
+	"page":
+	{"landing_page":
+		{"slideshow":
+			{
+				"name":"Simple Ladies",
+				"default":"default",
+				"type":"text"
+			},
+		 "header_text":
+		 	{
+		 		"name": 	"Top Header Text",
+		 		"default":	"We accept MasterCard, Visa, EcoCash, Telecash and ZimSwitch Payments.",
+		 		"type": "text"
+		 	},
+		 "large_message":
+		 	{
+		 		"name":		"Large banner message",
+		 		"default": 	"We deliver to all cities and towns in Zimbabwe, using Swift and DHL. Deivery within 5 days",
+		 		"type": "text"
+		 	}		
+		}
+	},
+	"global":
+	{
+		"theme_color" : "green"
+	},
+	"info":
+	{
+		"name" : "Simple Ladies",
+		"description": "Simple ladies is a simple,responsive theme designed for ladies fashion stores ",
+		"dir": "simple_ladies"
+	},
+	"vocabulary":
+	{
+		"blog": "Blog",
+		"product": "Product",
+		"featured_products": "Featured Products",
+		"browse_store": "Browse Store"
+	}
+}

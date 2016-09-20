@@ -1,0 +1,12 @@
+{
+    "SEO": {
+        "AlexaRank": "Alexa-tulos",
+        "Bing_IndexedPages": "Bingin indeksoidut sivut",
+        "Dmoz": "DMOZ tulossivut",
+        "DomainAge": "Sivun ikä",
+        "Google_IndexedPages": "Googlen indeksoimat sivut",
+        "Rank": "Sijoitus",
+        "SeoRankings": "SEO-tulos",
+        "SEORankingsFor": "SEO-sijoitus %s:lle"
+    }
+}

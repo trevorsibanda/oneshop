@@ -1,0 +1,20 @@
+{% extends "dashboard.twig" %}
+{% import 'ajaxMacros.twig' as ajax %}
+
+{% block topcontrols %}
+    {% include "@CoreHome/_siteSelectHeader.twig" %}
+    {% include "@CoreHome/_periodSelect.twig" %}
+    {{ postEvent("Template.nextToCalendar") }}
+    {% render dashboardSettingsControl %}
+    {% include "@CoreHome/_headerMessage.twig" %}
+{% endblock %}
+
+{% block content %}
+    {{ ajax.requestErrorDiv(emailSuperUser|default('')) }}
+    {{ ajax.loadingDiv() }}
+
+    <div id="content" class="home">
+        {% if content %}{{ content }}{% endif %}
+    </div>
+{% endblock %}
+

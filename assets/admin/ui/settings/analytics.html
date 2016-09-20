@@ -1,0 +1,43 @@
+<div class="row">
+	<div class="col-lg-12">
+		<ol class="breadcrumb">
+			<li><i class="fa fa-wrench"></i><a ng-href="#/settings/general">Settings</a></li>
+			<li><i class="fa fa-line-chart"></i>Stats and Analytics</li>						  	
+		</ol>
+	</div>
+</div>
+<div class="row" >
+	<div class="col-md-8" >
+		<div class="panel panel-default" >
+			<div class="panel-body" >
+				<h3>Google Analytics</h3>
+				<img src="//assets.263shop.co.zw/admin/img/stock/google_analytics.png" class="img-responsive" />
+				<br/>
+				<p>
+				Find out who has been viewing your website, from which country and city do your most of your visitors
+				come from and what pages do they visit the most using Google Analytics. 
+				<br/>
+				OneShop does not provide analytics because a much more powerful and flexible engine is offered
+				freely by Google and can be intergrated into your Shop.
+				<br/>
+				<br/>Visit <a target="_blank" href="http://google.com/analytics">Google Analytics</a> and signup. Then enter your tracker id below.
+				<br/><br/>
+
+				<div class="well" >
+					<label>Google Tracker ID</label>
+					<input type="text" ng-model="vm.analytics.google_analytics_key" placeholder="UA-"  class="form-control" />
+					<br/>
+					<button class="btn  btn-success pull-right" ng-click="vm.save()" ><i class="fa fa-save"></i> Save Settings</button>
+					<br/>
+					<small>Leave empty to disable analytics.</small>
+				</div> 
+				
+				
+				</p>
+			</div>
+		</div>	
+	</div>
+	<div class="col-md-4 well" >
+		<label>Actions</label>
+			<a href="https://www.google.com/analytics" target="_blank" class="btn btn-block btn-default " ><i class="fa fa-link"></i> Login to Google Analytics</a>
+</div>

@@ -1,0 +1,138 @@
+<div class="row">
+	<div class="col-lg-12">
+		<ol class="breadcrumb">
+			<li><i class="fa fa-paint-brush"></i><a ng-href="#/designer/theme">Designer</a></li>
+			<li><i class="fa fa-truck"></i>Select Theme</li>						  	
+		</ol>
+	</div>
+</div>
+<div class="row" ng-hide="vm.hideAll">
+	<div class="col-md-12" >
+		<div class="panel panel-default" >
+			<div class="panel-body" >
+				<p><b>OneShop offers several highly customizable themes for your website. </b><br/>
+				<hr/>
+				</p>
+				<div class="row"  style="margin-top: 20px; " >	
+						
+					<div class="col-md-2 col-xs-12" >
+						<label>Select a Theme</label>
+						<select class="form-control" ng-model="vm.selectedThemeName"  >
+							
+							<option ng-selected="{{theme.info.dir == vm.theme.info.dir}}" ng-repeat="theme in vm.themes" value="{{theme.info.dir}}">{{theme.info.name}}</option>
+						</select>
+						<br/>
+						<button class="btn btn-default btn-default btn-block" ng-if="vm.theme.info.dir != vm.selectedThemeName " ng-click="vm.livePreview()" tooltip="View how your site would look like if you applied this theme." tooltip-trigger="mouseenter"><i class="fa fa-eye"></i> Live Preview</button>
+						<br/>
+						<label>Description</label>
+						<p style='color: black;'>
+						{{ vm.themes[ vm.selectedThemeName ].info.description }}
+						</p>
+						
+						
+
+					</div>
+					<div class="col-md-8 col-xs-12 " >
+
+						<carousel interval="3000" >
+			              <slide ng-repeat="image in vm.themes[ vm.selectedThemeName ].screenshots" >
+			                <img ng-src="{{vm.image_url( image );}}" class="img-responsive" style="margin:auto; min-height: 160px; height: 100%; width: 100%; ">
+			                
+			              </slide>
+			            </carousel>
+						
+					</div>
+					<div class="col-md-2 ">
+						
+						<br/>
+						<label>Default Page</label>
+						<select class="form-control" tooltip="This is the page shown visits your shop's landing page. " tooltip-trigger="mouseenter" ng-disabled="vm.theme.info.dir == vm.selectedThemeName" ng-model="vm.defaultPage">
+							<option value="shop">Shop Page</option>
+							<option value="blog" >Blog Page</option>
+						</select>
+						<br/>
+						<button ng-disabled="vm.theme.info.dir == vm.selectedThemeName " ng-click="vm.applyTheme(vm.selectedThemeName)"class="btn btn-default btn-success btn-block"><i class="fa fa-check" ></i> Apply Theme</button>
+						<br/>
+						<div ng-show="vm.theme.info.dir == vm.selectedThemeName " >
+							<label>Edit Theme</label>
+							<a ng-click="vm.editPages()" class="btn btn-default btn-default btn-block"><i class="fa fa-file-o" tooltip="CUstomize the text, images or products shown on individual pages." tooltip-trigger="mouseover"></i> Edit Pages</a>
+							<label>Shop logo</label>
+							<a ng-href="#/settings/general" class="btn btn-default btn-default btn-block"><i class="fa fa-photo" tooltip="Change your shop's logo" tooltip-trigger="focus"></i> Change logo</a>
+							<label>Site Wording</label>
+							<a ng-click="vm.editWording()" tooltip="Translate words shown on your shop. For example instead of products you might want the word 'apps' " tooltip-trigger="focus" class="btn btn-default btn-default btn-block"><i class="fa fa-book"></i> Translate</a>
+							<label>Custom CSS</label>
+							<a ng-click="vm.customCSS()" class="btn btn-default btn-default btn-block"><i class="fa fa-code" tooltip="Are you a developer ? Custom your shop even more ! Add custom css for highly flexible site customization." tooltip-trigger="focus"></i> Custom CSS</a>
+						</div>
+					</div>
+				</div>
+							
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/ng-template" id="editCustomCSS.html">
+    <div class="modal-header" >
+    <i class="fa fa-code"></i> Edit custom CSS<span class="close" ng-click="vm.cancel()">&times;</span>
+    </div>
+    <div class="modal-body" ng-hide="vm.isProcessing" >
+        <div class="row" >
+            <div class="col-md-12" >
+            	<div class="" >
+            		<textarea  class="form-control" style="width: 100%; height: 250px; color: blue; font-size: 12px;" ng-model="vm.css" ></textarea>
+            	</div>
+            </div>
+        </div>           
+        <p>javascript: and expression: are not allowed.<br/>The CSS will be immediately applied to the </p>
+        <button class="btn btn-block  btn-danger" ng-click="vm.save()"  ><i class="fa fa-save"></i> Save Custom CSS</button>
+    </div>
+    <div class="modal-body" ng-show="vm.isProcessing" >
+        <legend>Please wait...</legend>
+        <p class="text-center">Saving custom CSS...</p>
+    </div>
+
+</script> 
+<script type="text/ng-template" id="editWording.html">
+    <div class="modal-header" >
+    <i class="fa fa-book"></i> Edit site wording<span class="close" ng-click="vm.cancel()">&times;</span>
+    </div>
+    <div class="modal-body" ng-hide="vm.isProcessing" >
+        <div class="row" >
+            <div class="col-md-12" >
+            	<div class="panel panel-default" >
+			<div class="panel-body" >
+				<p>You can change the text which is displayed in certain areas of your website.
+					<br/>
+					For example if you do not want to use the word <b>'product'</b> and would like to substitute
+					it with <b>'Package'</b>. Its super easy !
+				</p>
+				<table class="table table-striped" >
+					<thead >
+						<th>
+							<tr>
+								
+								<td>Word</td>
+								<td>Replacement</td>
+								
+							</tr>	
+					</thead>	
+					<tbody>
+						<tr ng-repeat="(word,val) in vm.vocabulary ">
+							<td><input class="form-control input-lg" readonly ng-model="word" placeholder="Your word" /></td>
+							<td><input class="form-control input-lg" ng-model="val" placeholder="Your word" /></td>
+							
+						</tr>
+					</tbody>
+				</table>
+				
+			</div>
+		</div>
+            </div>
+        </div>           
+        <button class="btn btn-block  btn-danger" ng-click="vm.save()"  ><i class="fa fa-save"></i> Update site wording</button>
+    </div>
+    <div class="modal-body" ng-show="vm.isProcessing" >
+        <legend>Please wait...</legend>
+        <p class="text-center">Saving custom CSS...</p>
+    </div>
+
+</script> 

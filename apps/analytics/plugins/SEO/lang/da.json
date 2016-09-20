@@ -1,0 +1,12 @@
+{
+    "SEO": {
+        "AlexaRank": "Alexa rang",
+        "Bing_IndexedPages": "Bing indekserede sider",
+        "Dmoz": "DMOZ angivelser",
+        "DomainAge": "Domæne alder",
+        "Google_IndexedPages": "Google indekserede sider",
+        "Rank": "Rang",
+        "SeoRankings": "SEO - søgemaskineoptimering",
+        "SEORankingsFor": "SEO for %s"
+    }
+}

@@ -1,0 +1,51 @@
+###############
+# Device Detector - The Universal Device Detection library for parsing User Agents
+#
+# @link http://piwik.org
+# @license http://www.gnu.org/licenses/lgpl.html LGPL v3 or later
+###############
+
+# AndroidDownloadManager
+- regex: 'AndroidDownloadManager(?:[ /]([\d\.]+))?'
+  name: 'AndroidDownloadManager'
+  version: '$1'
+
+# AFNetworking generic
+- regex: '([^/]+)/(\d+(?:\.\d+)+) \((?:iPhone|iPad); iOS [0-9\.]+; Scale/[0-9\.]+\)'
+  name: '$1'
+  version: '$2'
+
+# Facebook
+- regex: 'com.facebook.katana'
+  name: 'Facebook'
+  version: ''
+
+# FeedR
+- regex: 'FeedR(?:/([\d\.]+))?'
+  name: 'FeedR'
+  version: '$1'
+
+# Google Play Kiosk
+- regex: 'com.google.android.apps.magazines'
+  name: 'Google Play Newsstand'
+  version: ''
+
+# Google Plus
+- regex: 'com.google.GooglePlus'
+  name: 'Google Plus'
+  version: ''
+
+# WeChat
+- regex: 'MicroMessenger/([^ ]+)'
+  name: 'WeChat'
+  version: '$1'
+
+# Sina Weibo
+- regex: '.*__weibo__([0-9\.]+)__'
+  name: 'Sina Weibo'
+  version: '$1'
+
+# YouTube
+- regex: 'com.google.android.youtube(?:/([\d\.]+))?'
+  name: 'YouTube'
+  version: '$1'

@@ -1,0 +1,49 @@
+<h4><i class="fa fa-bold"></i> Edit site wording</h4>
+<div class="row">
+	<div class="col-lg-12">
+		<ol class="breadcrumb">
+			<li><i class="fa fa-paint-brush"></i><a ng-href="#/orders/browse">Designer</a></li>
+			<li><i class="fa fa-book"></i>Site Wording</li>						  	
+		</ol>
+	</div>
+</div>
+<div class="row" >
+	<div class="col-md-10" >
+		<div class="panel panel-default" >
+			<div class="panel-body" >
+				<p>You can change the text which is displayed in certain areas of your website.
+					<br/>
+					For example if you do not want to use the word <b>'product'</b> and would like to substitute
+					it with <b>'Package'</b>. Its super easy !
+				</p>
+				<table class="table table-striped" >
+					<thead >
+						<th>
+							<tr>
+								
+								<td>Word</td>
+								<td>Replacement</td>
+								<td>Action</td>
+							</tr>	
+					</thead>	
+					<tbody>
+						<tr ng-repeat="(word,val) in vm.vocabulary ">
+							<td><input class="form-control input-lg" readonly ng-model="word" placeholder="Your word" /></td>
+							<td><input class="form-control input-lg" ng-model="val" placeholder="Your word" /></td>
+							<td><a ng-click="" ><i class="fa fa-eye" ></i></a></td> 
+						</tr>
+					</tbody>
+				</table>
+				<br/>
+				<button class="btn btn-success pull-right btn-lg">Update vocabulary</button>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-2 well" >
+		<label>Action</label>
+		<br/>
+		<button class="btn btn-block btn-default"><i class="fa fa-paint-brush"></i> Select Theme</button>
+		<br/>
+
+	</div>
+</div>					
